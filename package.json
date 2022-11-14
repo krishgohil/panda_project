@@ -30,6 +30,7 @@
     "react-redux": "^8.0.5",
     "react-toastify": "^9.1.1",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "vercel": "^28.5.0"
   }
 }

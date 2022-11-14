@@ -21,7 +21,7 @@ const Privacy = () => {
                     <h1>
                         Privacy Policy.
                     </h1>
-                    <p>With that in mind, we’ve written our Privacy Policy as simply as possible to empower you to make informed decisions when you use Ubout by making sure you understand and have control over the information we collect, how it’s used, and when it’s shared. </p>
+                    <p>With that in mind, weve written our Privacy Policy as simply as possible to empower you to make informed decisions when you use Ubout by making sure you understand and have control over the information we collect, how its used, and when its shared. </p>
 
 
                     <h3>1. What kinds of information do we collect?</h3>
@@ -42,12 +42,12 @@ const Privacy = () => {
 
                     <p>
                         <span style={{ fontWeight: "bold" }} > Provide, personalise and improve our Products: </span>
-                        We use the information that we have to deliver our Products, including to personalise features and content  and make suggestions for you on and off our Products. To create personalised Products that are unique and relevant to you, we use your connections, preferences, interests and activities based on the data that we collect and learn from you, how you use and interact with our Products; and the people, places or things that you're connected to and interested in on and off our Products.
+                        We use the information that we have to deliver our Products, including to personalise features and content  and make suggestions for you on and off our Products. To create personalised Products that are unique and relevant to you, we use your connections, preferences, interests and activities based on the data that we collect and learn from you, how you use and interact with our Products; and the people, places or things that you are connected to and interested in on and off our Products.
 
                     </p>
 
                     <h3>3. How is this information shared?</h3>
-                    <p>When you share and communicate using our Products, you choose the audience for what you share. For example, when you post on Ubout, you select the audience for the post, such as a group, all of your friends, the public or a customised list of people. You should consider who you choose to share with, because people who can see your activity on our Products can choose to share it with others on and off our Products, including people and businesses outside the audience that you shared with. We provide advertisers with reports about the kinds of people seeing their ads and how their ads are performing, but we don't share information that personally identifies you (information such as your name or email address that by itself can be used to contact you or identifies who you are) unless you give us permission. </p>
+                    <p>When you share and communicate using our Products, you choose the audience for what you share. For example, when you post on Ubout, you select the audience for the post, such as a group, all of your friends, the public or a customised list of people. You should consider who you choose to share with, because people who can see your activity on our Products can choose to share it with others on and off our Products, including people and businesses outside the audience that you shared with. We provide advertisers with reports about the kinds of people seeing their ads and how their ads are performing, but we dont share information that personally identifies you (information such as your name or email address that by itself can be used to contact you or identifies who you are) unless you give us permission. </p>
                 </div>
             </div>
         </>
