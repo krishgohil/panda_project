@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-import { host } from '../../Host';
+import { host } from '../../host';
 import Router, { useRouter } from 'next/router';
 const Search = () => {
     const { username, name, _id, profileImg, about, guest, links } = useSelector(state => state.auth)
