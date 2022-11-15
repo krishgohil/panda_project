@@ -202,7 +202,7 @@ export default function Home(props) {
 
 export async function getServerSideProps(context) {
 
-  const response = await fetch(`http://localhost:3000/api/fetchpeople`, {
+  const response = await fetch(`${host}/api/fetchpeople`, {
     // const response = await fetch('https://keepitupp.herokuapp.com/api/auth/fetchuniqueser', {
     method: 'PUT',
     headers: {
