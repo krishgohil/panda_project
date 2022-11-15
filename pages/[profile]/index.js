@@ -1082,7 +1082,6 @@ const Profile = (props) => {
 
 
 
-            krish gohil
 
             <Ratings darkMode={darkMode} searchedProfile={searchedProfile} profileImg={profileImg} _id={_id} />
           </div>

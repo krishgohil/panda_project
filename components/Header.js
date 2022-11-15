@@ -5,7 +5,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 import styles from '../styles/Home.module.css'
 import { useSelector, useDispatch } from "react-redux"
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { host } from '../host';
 import { SET_DISPLAY_MODE } from '../actionType';
 import Link from 'next/link';
@@ -15,7 +15,8 @@ const Header = () => {
 
 
     const { username, name, _id, profileImg, about, guest, links } = useSelector(state => state.auth)
-    const { input } = useRouter();
+    const router = useRouter()
+    const { input } = router.query
     const dispatch = useDispatch()
     const { feed_Data, displayDarkMode } = useSelector(state => state.feed)
 
@@ -24,7 +25,13 @@ const Header = () => {
 
     const [darkMode, setdarkMode] = useState(false)
     useEffect(() => {
-        // dispatch(searchUsers())
+        console.log("input", input)
+
+        if (window.location.pathname == `/search/${input}`) {
+            dispatch(searchUsers())
+        } else {
+            console.log("iuytrew", input)
+        }
     }, [input])
 
     useEffect(() => {
@@ -58,7 +65,9 @@ const Header = () => {
         e.preventDefault()
         // let x = input.replace(/\s\s+/g, ' ')
         console.log(_input)
-        navigate(`/search/${_input}`)
+        Router.push(`/search/${_input}`)
+        // navigate(`/search/${_input}`)
+
 
 
 
@@ -100,7 +109,7 @@ const Header = () => {
                     size={20}
                 // onClick={() => handleToggleSidebar()}
                 />
-                <img alt="img" className={styles.companyLogo} src="./favicon.ico" style={{ zIndex: 999 }} />
+                <img alt="img" className={styles.companyLogo} src="https://res.cloudinary.com/dmjoqk3ww/image/upload/v1668442060/emm8ons4w1bsfqzz0iwn.png" style={{ zIndex: 999 }} />
                 <span className={styles.companyName} style={darkMode ? { color: 'white', fontFamily: 'cursive', marginLeft: "1rem" } : { color: 'black', fontFamily: 'cursive', marginLeft: "1rem" }}  >
                     <b> <>
                         Ubout
@@ -111,7 +120,7 @@ const Header = () => {
             </div>
 
 
-            <form className={styles._srchbar} >
+            <form className={styles._srchbar} onSubmit={handleSubmit} >
                 <input
                     className={styles.formInput}
                     type='text'

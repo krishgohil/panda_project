@@ -3,11 +3,11 @@ const connectToMongo = require('../../db')
 
 
 export default async function searchUsers(req, res) {
-    // const { input } = req.body
+    const { input } = req.body
 
     await connectToMongo();
 
-    const input = "krish"
+    // const input = "krish"
     console.log(input)
 
     try {
