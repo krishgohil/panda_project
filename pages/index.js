@@ -28,6 +28,9 @@ export default function Home(props) {
   useEffect(() => {
 
 
+    console.log(process.env.VERCEL_URL,"URL")
+
+
   }, [])
 
   useEffect(() => {
