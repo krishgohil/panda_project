@@ -7,6 +7,7 @@ import { GET_USER_DETAILS } from "../actionType";
 import { host } from "../host";
 import { useEffect } from "react";
 import 'react-toastify/dist/ReactToastify.min.css';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 function MyApp({ Component, pageProps }) {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -30,7 +31,7 @@ function MyApp({ Component, pageProps }) {
       body: JSON.stringify({ utoken }),
     });
     const json = await response.json();
-    console.log(json.fetchuniqueser) 
+    console.log(json.fetchuniqueser)
 
 
     dispatch({
@@ -62,10 +63,11 @@ function MyApp({ Component, pageProps }) {
   return (
 
     <>
-      <Provider store={store}>
-        
-        <Component {...pageProps} />
-      </Provider>
+      <GoogleOAuthProvider clientId="87939184502-dvrtpsvn23tj3comolg0hcm6r8trqqvd.apps.googleusercontent.com">
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
+      </GoogleOAuthProvider>
     </>
   );
 }

@@ -118,9 +118,9 @@ const Analytics = ({ }) => {
         </div>
 
         {
-          links.map(link => {
+          links.map((link,i) => {
             return (
-              <div style={darkMode ?
+              <div key={i} style={darkMode ?
                 {
                   display: "flex", alignItems: "center", width: "100%", margin: "0.25rem 0", borderRadius: "1rem", padding: "0.5rem 0"
                 } : {
@@ -147,9 +147,9 @@ const Analytics = ({ }) => {
         </div>
 
         {
-          referrers.map(ref => {
+          referrers.map((ref,i) => {
             return (
-              <div style={darkMode ? {
+              <div key={i} style={darkMode ? {
                 display: "flex", alignItems: "center", width: "100%", backgroundColor: "", margin: "0.25rem", borderRadius: "1rem", padding: "0.5rem"
               } : {
                 display: "flex", alignItems: "center", width: "100%", backgroundColor: "whitesmoke", margin: "0.25rem", borderRadius: "1rem", padding: "0.5rem"
