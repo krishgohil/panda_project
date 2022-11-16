@@ -292,7 +292,7 @@ const Login = () => {
 
 
               <div style={{ color: "gray", fontSize: "14px", marginTop: "1rem" }} >
-                <div>Don't have an account?</div>
+                <div>Do not have an account?</div>
                 <button onClick={gotosignup} style={{ border: "1px solid gray", padding: "0.25rem 0.5rem", borderRadius: "1rem" }} >Sign Up Now</button>
               </div>
               {/* <div style={{ display: "flex", color: "gray", fontSize: "0.8rem", }} >
@@ -404,11 +404,11 @@ export const ForgotPassword = () => {
 
         <h1>Password Reset</h1>
         <p style={{ margin: 0 }} >Enter your email address that you used to register. </p>
-        <p>We'll send you an email with a link to reset your password.</p>
+        <p>We will send you an email with a link to reset your password.</p>
         <div className="mb-3">
           <label style={{}} htmlFor="email" className="form-label"> <AiOutlineMail size={20} />   Email address</label>
           <input placeholder='enter your email address here' onChange={mailfunc} required type="email" className="form-control" id="email" name="email" aria-describedby="emailHelp" style={{ textTransform: 'lowercase' }} />
-          <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
+          <div id="emailHelp" className="form-text">We willl never share your email with anyone else.</div>
         </div>
 
         {
