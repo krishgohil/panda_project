@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { AiOutlineStock } from 'react-icons/ai'
 import { MdAdsClick, MdArrowBack, MdOutlineRemoveRedEye } from 'react-icons/md'
@@ -9,6 +10,7 @@ const Analytics = ({ }) => {
   const [darkMode, setdarkMode] = useState(false)
 
 
+  const router = useRouter()
 
   useEffect(() => {
 
@@ -27,8 +29,8 @@ const Analytics = ({ }) => {
         { width: "100vw", height: "100vh", overflowY: "scroll", scrollMargin: 0, overflowX: "hidden", display: "flex", alignItems: "center", flexDirection: "column", color: "inherit" } : { width: "100vw", height: "100vh", overflowY: "scroll", scrollMargin: 0, overflowX: "hidden", display: "flex", alignItems: "center", flexDirection: "column", color: "inherit" }
     } >
 
-      <div style={{ width: "90%" }} >
-        <MdArrowBack color={darkMode ? "white" : "black"}  size={28} />
+      <div onClick={()=>{router.back()}} style={{ width: "90%" }} >
+        <MdArrowBack  color={darkMode ? "white" : "black"}  size={28} />
       </div>
       <div
         className='widthCommon'

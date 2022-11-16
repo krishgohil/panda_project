@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { host } from '../host'
 import { Spinner } from 'react-bootstrap';
 import { GET_USER_DETAILS } from '../actionType';
+import { useRouter } from 'next/router';
 
 
 
@@ -39,6 +40,7 @@ const Login = () => {
 
   const dispatch = useDispatch()
 
+  const router = useRouter()
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -189,7 +191,7 @@ const Login = () => {
               avgRating: json.user.avgRating,
             }
           })
-          // navigate("/")
+          router.push("/")
         }, 1800);
 
       }
@@ -221,7 +223,6 @@ const Login = () => {
         } else {
           console.log("Bhai kuch date ka lafda hai")
           setloginAfterBan(false)
-
         }
         // console.log(a)
         setloginAttempts(a)

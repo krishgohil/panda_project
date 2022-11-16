@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { host } from '../host'
 import { GoogleLogin } from '@react-oauth/google';
 import { Spinner } from 'react-bootstrap';
+import { useRouter } from 'next/router';
 const Signup = (props) => {
   const [show, setshow] = useState(true)
   const [mailmessage, setmailmessage] = useState(false)
@@ -31,6 +32,7 @@ const Signup = (props) => {
   const [googleDetails, setgoogleDetails] = useState()
 
   const [getusername, setgetusername] = useState(false)
+  const router = useRouter()
   // const accessToken = useSelector(state => state.auth2.accessToken)
   // const loading = useSelector(state => state.auth2.loading)
 
@@ -56,7 +58,7 @@ const Signup = (props) => {
   // }, [])
 
 
- 
+
 
 
   async function handleSubmit(e) {
@@ -245,7 +247,7 @@ const Signup = (props) => {
   const signUp = (name, email, password, username) => async dispatch => {
     console.log(username)
     try {
-      const response = await fetch(`${host}/api/auth/createuser`, {
+      const response = await fetch(`${host}/api/signup`, {
         method: 'POST',
 
         headers: {
@@ -282,6 +284,7 @@ const Signup = (props) => {
 
           }
         })
+        router.push(`/${json.user.username}`)
       }
       else if (json.error === "email_exists") {
         setwait(false)

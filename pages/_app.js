@@ -12,7 +12,9 @@ function MyApp({ Component, pageProps }) {
   const dispatch = useDispatch()
   useEffect(() => {
     const utoken = localStorage.getItem('utoken')
-
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
     if (utoken) {
       dispatch(fetchUniqueUser(utoken))
     }

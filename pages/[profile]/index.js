@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Button, Col, Container, Row, Navbar, Modal, FloatingLabel, Spinner, CloseButton } from 'react-bootstrap'
 
 import Form from 'react-bootstrap/Form';
@@ -11,7 +11,7 @@ import { FcCancel } from 'react-icons/fc'
 import { toast, ToastContainer } from 'react-toastify'
 
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
-import { BsMoon, BsMoonFill, BsStars, BsSun, BsSunFill } from "react-icons/bs"
+import { BsStars } from "react-icons/bs"
 import { RiHome2Line, RiNumbersFill } from "react-icons/ri"
 import { host } from '../../host';
 import Analytics from '../../components/Analytics';
@@ -61,36 +61,24 @@ const Profile = (props) => {
   }
 
 
-  // useEffect(() => {
-  //   console.log(props.fetchuniqueser)
-  //   setsearchedProfile(props.fetchuniqueser)
-  //   settempUserInfo({ ...tempUserInfo, username: props.fetchuniqueser.username, about: props.fetchuniqueser.about, name: props.fetchuniqueser.name, profileImg: props.fetchuniqueser.profileImg, darkMode: props.fetchuniqueser.darkModeProfile, profBg: props.fetchuniqueser.backgroundImage, profession: props.fetchuniqueser.profession })
-  //   settempLinks(props.fetchuniqueser.links)
-  //   setoriginalLinks(props.fetchuniqueser.links)
-  //   setshowProfile(true)
-  //   settempprofession(props.fetchuniqueser.profession)
-  //   if (props.fetchuniqueser.darkModeProfile) {
-  //     document.getElementsByTagName("body")[0].style.backgroundColor = "black"
-  //     setdarkMode(true)
-  //   } else {
-  //     document.getElementsByTagName("body")[0].style.backgroundColor = "white"
-  //     setdarkMode(false)
-  //   }
 
-  //   if ( typeof window !== 'undefined' && window.location.pathname !== `/${props.fetchuniqueser.username}`) {
-  //     router.push(`/${props.fetchuniqueser.username}`)
 
-  //   }
-  // }, [])
+  useEffect(() => {
+
+    console.log("krish")
+    if (window.location.pathname !== `/${router.query.profile}`) {
+      window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}`, url: `/${router.query.profile}` }, '', `/${router.query.profile}`);
+      setcnt(cnt + 1)
+    }
+
+  }, [])
+
 
 
 
   useEffect(() => {
 
-    console.log(props.fetchuniqueser.links)
 
-    // settempLinks(props.fetchuniqueser.links)
-    // setoriginalLinks(props.fetchuniqueser.links)
     setcnt(cnt + 1)
 
 
@@ -443,25 +431,7 @@ const Profile = (props) => {
 
   }
 
-  const handleLinkClick = (link) => {
-    dispatch(openLinkFunc(link))
 
-  }
-  const openLinkFunc = (link) => async dispatch => {
-
-    // window.open(link.url, '_blank')
-
-    console.log(searchedProfile._id, "sitaram", link)
-    // const response = await fetch(`${host}/api/auth/openlink`, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ _id: searchedProfile._id, link_id: link._id })
-    // });
-    // const json = await response.json();
-    // console.log(json)  
-  }
 
 
 
@@ -476,6 +446,9 @@ const Profile = (props) => {
 
 
   }, [cnt]);
+
+
+
   return (
     <>
 
@@ -734,6 +707,18 @@ const Profile = (props) => {
 
           }} to={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/edit` || editing ? "edit/ratings" : "ratings"} className={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/ratings` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"}  >Ratings</div>
 
+          {
+            searchedProfile._id == _id && !editing ?
+              <div to='settings' className={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/settings` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"} onClick={() => {
+                window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/settings`, url: `/${router.query.profile}/settings` }, '', `/${router.query.profile}/settings`);
+                document.getElementById("linkRow").style.display = 'none'
+                setcnt(cnt + 1)
+              }}  >
+                <MdSettings size={24} />
+              </div>
+              : ""
+          }
+
 
           {
             editing ?
@@ -747,20 +732,14 @@ const Profile = (props) => {
               ""
 
           }
-          {/* {
-                    searchedProfile._id == _id && !editing ?
-                      <button to='settings' className={ typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/settings` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"}  >
-                        <MdSettings size={24} />
-                      </button>
-                      : ""
-                  } */}
+
 
 
         </div>
 
         {
           searchedProfile._id == _id && editing && typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/edit` ?
-            <div style={{ width: "50%", margin: " 0.5rem auto" }} className={darkMode ? "linkCard_dm" : "linkCard"}  >
+            <div style={{ width: "50%", margin: " 0.5rem auto", border: "1px solid gray", borderRadius: "1rem" }} className={darkMode ? "linkCard_dm" : "linkCard"}  >
               <div className="container" style={{ backgroundColor: "" }} >
                 <h6 style={{ textAlign: "center", marginTop: "0.5rem" }} onClick={
                   () => {
@@ -966,31 +945,7 @@ const Profile = (props) => {
             {
 
               searchedProfile.links.map((link, i) =>
-                <Col
-                  // onClick={() => dispatch(openLinkFunc(link))}
-                  className={darkMode ? "linkCard_dm" : "linkCard"} xs={link.fullWidth ? 11 : 5} key={i}
-                  style={{ margin: "0.5rem", padding: "0", cursor: "pointer", borderRadius: "0.5rem", display: "block" }}
-                >
-
-                  <a onClick={() => { handleLinkClick(link) }} style={{ color: "inherit", textDecoration: "none" }} href={`${link.url}`} target="blank" className="contain">
-                    {
-                      link.image?.name?.length > 0 ?
-                        <div style={{ display: "flex", justifyContent: "center" }} >
-                          <img src={URL.createObjectURL(link.image)} alt="" style={{ width: "100%", borderRadius: "0.5rem 0.5rem 0 0" }} />
-                        </div> : ""
-                    }
-                    {
-                      link.image && typeof link.image == "string" ?
-                        <div style={{ display: "flex", justifyContent: "center", }} >
-                          <img src={link.image} alt="" style={{ width: "100%", borderRadius: "0.5rem 0.5rem 0 0" }} />
-                        </div>
-                        : ""
-                    }
-
-                    <h6 style={{ textAlign: "center", marginTop: "0.5rem", }} ><b>{link.title}</b></h6>
-                    {/* <p>Architect & Engineer</p> */}
-                  </a>
-                </Col>
+                <LinkItem key={i} darkMode={darkMode} link={link} />
               )
 
             }
@@ -1064,7 +1019,7 @@ const Profile = (props) => {
                     onChange={(e) => settempUserInfo({ ...tempUserInfo, about: e.target.value })}
                     as="textarea"
                     placeholder="Tell more about yourself"
-                    style={darkMode ? { resize: "none", border: "none", backgroundColor: "black", color: "white" } : { resize: "none", border: "none", backgroundColor: "white", color: "black" }}
+                    style={darkMode ? { resize: "none", border: "none", color: "white", backgroundColor: "inherit" } : { resize: "none", border: "none", color: "black", backgroundColor: "inherit" }}
                     rows={12}
 
                     value={tempUserInfo.about}
@@ -1159,7 +1114,9 @@ const Profile = (props) => {
                 <Row style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "4rem 0", textAlign: "center", padding: "0.5rem" }} className={darkMode ? "linkCard_dm" : "linkCard"} >
                   <Col>
                     <h6>Hide Ubout Logo</h6>
-                    <h5>Ubout ℹ</h5>
+                    <h5>Ubout
+                      <img src="./favicon.ico" style={{ width: "30px", height: "30px", marginLeft: "0.5rem" }} alt="" />
+                    </h5>
                   </Col>
                   <Col>
                     <h6>Upgrade 🔒</h6>
@@ -1178,10 +1135,10 @@ const Profile = (props) => {
             typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/settings` && searchedProfile._id == _id ?
               <div className={darkMode ? "linkCard_dm" : "linkCard"} style={{ fontWeight: "600", whiteSpace: 'pre-wrap', wordBreak: "break-word", width: "100%", padding: "1rem", marginBottom: "2rem", backgroundColor: "" }}  >
 
-                <p style={{ color: "gray", marginBottom: "0.5rem", cursor: "pointer" }} >Terms of Service</p>
-                <p style={{ color: "gray", marginBottom: "0.5rem", cursor: "pointer" }} >Privacy</p>
-                <p style={{ color: "gray", marginBottom: "0.5rem", cursor: "pointer" }} >About</p>
-                <p style={{ color: "gray", marginBottom: "0.5rem", cursor: "pointer" }} >@All right reserved</p>
+                <p style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer" }} >Terms of Service</p>
+                <p style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer" }} >Privacy</p>
+                <p style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer" }} >About</p>
+                <p style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer" }} >@All right reserved</p>
               </div>
               : ""
           }
@@ -1253,7 +1210,7 @@ const Profile = (props) => {
                   navigator.share({
                     title: "Ubout Profile",
                     text: "Sharing a post",
-                    url: ''
+                    url: `${host}/${searchedProfile.username}`
 
                   })
 
@@ -1288,16 +1245,7 @@ export default Profile
 
 export const CardItem = ({ provided, darkMode, link, i, snapshot, getItemStyle, seteditLinkModal, seteditLink, setModalShow, settempLinkInfo }) => {
 
-  // const bind = useLongPress(() => {
-  //   // alert('dfg')
-  //   let obj = link
-  //   obj.index = i
-  //   settempLinkInfo(obj)
-  //   setModalShow(true)
-  //   seteditLinkModal(true)
 
-
-  // });
   return (
     <Col ref={provided.innerRef}
       {...provided.draggableProps}
@@ -1336,6 +1284,90 @@ export const CardItem = ({ provided, darkMode, link, i, snapshot, getItemStyle, 
         {/* <p>Architect & Engineer</p> */}
       </div>
     </Col>
+  )
+}
+
+export const LinkItem = ({ link, darkMode, key }) => {
+
+  const ref = useRef()
+  const [showShareBtn, setshowShareBtn] = useState(false)
+  const handleLinkClick = (link) => {
+    ref.current.click()
+    // dispatch(openLinkFunc(link))
+  }
+  const openLinkFunc = (link) => async dispatch => {
+
+    // window.open(link.url, '_blank')
+
+    console.log(searchedProfile._id, "sitaram", link)
+    // const response = await fetch(`${host}/api/auth/openlink`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ _id: searchedProfile._id, link_id: link._id })
+    // });
+    // const json = await response.json();
+    // console.log(json)  
+  }
+  return (
+    <>
+      <Col
+        onMouseOver={() => {
+          setshowShareBtn(true)
+        }}
+        onMouseLeave={() => {
+          setshowShareBtn(false)
+        }}
+        // onClick={() => dispatch(openLinkFunc(link))}
+        className={darkMode ? "linkCard_dm" : "linkCard"} xs={link.fullWidth ? 11 : 5} key={key}
+        style={{ margin: "0.5rem", padding: "0", cursor: "pointer", borderRadius: "0.5rem", display: "block" }}
+      >
+
+        <a target="_blank" ref={ref} href={`${link.url}`} style={{ display: "none" }} ></a>
+        <div onClick={(e) => {
+          e.stopPropagation();
+          handleLinkClick(link)
+        }} style={{ color: "inherit", textDecoration: "none" }} target="blank" className="contain">
+          {
+            link.image?.name?.length > 0 ?
+              <div style={{ display: "flex", justifyContent: "center" }} >
+                <img src={URL.createObjectURL(link.image)} alt="" style={{ width: "100%", borderRadius: "0.5rem 0.5rem 0 0" }} />
+              </div> : ""
+          }
+          {
+            link.image && typeof link.image == "string" ?
+              <div style={{ display: "flex", justifyContent: "center", }} >
+                <img src={link.image} alt="" style={{ width: "100%", borderRadius: "0.5rem 0.5rem 0 0" }} />
+              </div>
+              : ""
+          }
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "0.5rem 0", padding: "0 0.5rem" }} >
+            <h6 style={{ textAlign: "center", margin: 0 }} ><b>{link.title}</b>  </h6>
+            <div >
+              {showShareBtn ?
+                <AiOutlineShareAlt onClick={(e) => {
+                  e.stopPropagation();
+                  if (navigator.share) {
+                    navigator.share({
+                      title: "Ubout Profile Link",
+                      text: "Sharing a link",
+                      url: link.url
+
+                    })
+
+                  }
+                }} size={20} style={{ margin: "0 0.5rem", }} color='inherit' />
+                : ''}
+            </div>
+          </div>
+
+
+
+          {/* <p>Architect & Engineer</p> */}
+        </div>
+      </Col>
+    </>
   )
 }
 
