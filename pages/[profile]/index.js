@@ -1324,7 +1324,7 @@ export const LinkItem = ({ link, darkMode, key }) => {
         style={{ margin: "0.5rem", padding: "0", cursor: "pointer", borderRadius: "0.5rem", display: "block" }}
       >
 
-        <a target="_blank" ref={ref} href={`${link.url}`} style={{ display: "none" }} ></a>
+        <a target="_blank" ref={ref} rel="noopener noreferrer" href={`${link.url}`} style={{ display: "none" }} ></a>
         <div onClick={(e) => {
           e.stopPropagation();
           handleLinkClick(link)
