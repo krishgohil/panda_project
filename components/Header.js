@@ -97,7 +97,7 @@ const Header = () => {
 
     return (
         <div className={styles.header}
-            style={darkMode ? { bdarkModeProfileackgroundColor: "#1b1a1a", color: "white" } : { backgroundColor: "whitesmoke", color: "black" }}
+            // style={darkMode ? { backgroundColor: "#1b1a1a", color: "white" } : { backgroundColor: "whitesmoke", color: "black" }}
         >
 
 

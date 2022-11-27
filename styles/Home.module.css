@@ -16,7 +16,13 @@
 }
 
 
+.blogbg {
+  /* background: linear-gradient(to right, indigo, rgb(43, 0, 74), indigo); */
+  background: linear-gradient(rgb(0, 82, 76), rgb(1, 123, 160), rgb(2, 87, 118));
+  background: linear-gradient(rgb(55, 54, 54), rgb(45, 45, 45), rgb(23, 23, 23));
+  color: white;
 
+}
 
 .app__main {
 
@@ -142,8 +148,8 @@
 .imgupdiv {
   display: flex;
   justify-content: center;
-  background-color: rgb(70, 70, 70);
   background-color: rgb(214, 213, 213);
+  background-color: rgb(71, 71, 71);
 
 }
 
