@@ -4,7 +4,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 const connectToMongo = require('../../db')
 const User = require('../../models/User')
-import multiparty from "multiparty";
+import multiparty from "multiparty";    
 // var cloudinary = require('cloudinary').v2;
 
 import cloudinary from "cloudinary"
