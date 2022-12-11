@@ -18,6 +18,9 @@ body {
   width: 50%
 }
 
+.infinite-scroll-component__outerdiv {
+  padding-left: 0 !important;
+}
 
 
 @media (max-width: 1000px) {

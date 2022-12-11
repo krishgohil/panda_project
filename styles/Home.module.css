@@ -422,15 +422,19 @@
 }
 
 @media (max-width: 800px) {
+  .header__menu {
+    display: flex;
+  }
+
   .header {
     padding: 0.5rem;
     width: 100%;
     /* justify-content: flex-start; */
   }
 
-  /* _srchbar {
-      flex: 0.8;
-  } */
+  ._srchbar {
+    flex: 1;
+  }
 
   .companyName {
     display: none;

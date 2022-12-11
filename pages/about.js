@@ -7,7 +7,6 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { MdOutlineCopyright } from 'react-icons/md'
 import { useDispatch } from 'react-redux';
 import { host } from '../host';
-import stylesC from '../styles/Home.module.css'
 import { FaStar } from 'react-icons/fa'
 import styles from '../styles/about.module.css'
 

@@ -97,57 +97,57 @@ const Search = () => {
 
                         {
                             searchedResults && searchedResults.length > 0 && searchedResults.map((peep, i) =>
-                        <Col
-                            onClick={() => {
-                                Router.push(`/${peep.username}`)
-                            }}
-                            className={styles.row}
-                            lg={4} md={4} xs={6} key={i} style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
-                            <Link scroll={false} href={`/${peep.username}`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
-                                <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
-                                    <div className={styles.imgupdiv} style={{ display: "flex", justifyContent: "center", borderRadius: " 0", }} >
-                                        <img className={styles.img} src={peep.profileImg} alt="" />
-                                    </div>
+                                <Col
+                                    onClick={() => {
+                                        Router.push(`/${peep.username}`)
+                                    }}
+                                    className={styles.row}
+                                    lg={4} md={4} xs={6} key={i} style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
+                                    <Link scroll={false} href={`/${peep.username}`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
+                                        <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
+                                            <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(214,214,214)" }} >
+                                                <img className={styles.img} src={peep.profileImg} alt="" />
+                                            </div>
 
 
-                                    <div style={{ padding: "0.5rem" }} >
+                                            <div style={{ padding: "0.5rem" }} >
 
-                                        <div style={{ display: "flex" }} >
-                                            <p style={{ textAlign: "center", width: "100%", fontSize: "14px", marginBottom: "0.5rem" }} ><b>{peep.name}</b></p>
-                                            {/* <h6>Entrepreneur</h6> */}
+                                                <div style={{ display: "flex" }} >
+                                                    <p style={{ textAlign: "center", width: "100%", fontSize: "14px", marginBottom: "0.5rem" }} ><b>{peep.name}</b></p>
+                                                    {/* <h6>Entrepreneur</h6> */}
+                                                </div>
+                                                <p className={styles.ppp} style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", whiteSpace: 'pre-wrap', wordBreak: "break-word" }} >
+                                                    {/* Student at Veermata Jijabai Technological Institute (VJTI) */}
+                                                    {peep.about}
+                                                </p>
+
+                                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                                    <p className={styles.card_p} style={
+                                                        darkMode ?
+                                                            { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "#212121", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" } : { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "rgb(225, 225, 225)", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" }
+                                                    } >
+                                                        {peep.profession}
+                                                    </p>
+                                                    <p style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", display: "flex", alignItems: "center", fontWeight: "600", marginLeft: "4px" }} >
+                                                        {peep.totalRatingsLength > 0 ?
+
+                                                            peep.totalRating / peep.totalRatingsLength : '5'}
+                                                        <FaStar color='orange' ></FaStar>
+
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+                                            {/* <p>Architect & Engineer</p> */}
                                         </div>
-                                        <p className={styles.ppp} style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", whiteSpace: 'pre-wrap', wordBreak: "break-word" }} >
-                                            {/* Student at Veermata Jijabai Technological Institute (VJTI) */}
-                                            {peep.about}
-                                        </p>
-
-                                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                            <p className={styles.card_p} style={
-                                                darkMode ?
-                                                    { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "#212121", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" } : { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "rgb(225, 225, 225)", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" }
-                                            } >
-                                                {peep.profession}
-                                            </p>
-                                            <p style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", display: "flex", alignItems: "center", fontWeight: "600", marginLeft: "4px" }} >
-                                                {peep.totalRatingsLength > 0 ?
-
-                                                    peep.totalRating / peep.totalRatingsLength : '5'}
-                                                <FaStar color='orange' ></FaStar>
-
-                                            </p>
-
-                                        </div>
-
-                                    </div>
-                                    {/* <p>Architect & Engineer</p> */}
-                                </div>
-                            </Link>
+                                    </Link>
 
 
 
-                        </Col>
+                                </Col>
 
-                        )
+                            )
                         }
 
 

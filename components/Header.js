@@ -97,7 +97,7 @@ const Header = () => {
 
     return (
         <div className={styles.header}
-            // style={darkMode ? { backgroundColor: "#1b1a1a", color: "white" } : { backgroundColor: "whitesmoke", color: "black" }}
+            style={darkMode ? { backgroundColor: "#1b1a1a", color: "white" } : { backgroundColor: "whitesmoke", color: "black" }}
         >
 
 
@@ -129,10 +129,10 @@ const Header = () => {
                     // value={_input}
                     onChange={e => set_input(e.target.value)}
                     maxLength={100}
-                    style={darkMode ? { color: "lightgreen" } : { color: "darkblue" }}
+                    style={darkMode ? { color: "#e6f8eb" } : { color: "rgb(30,30,30)" }}
                 />
                 <button type='submit' className={styles.sbmtbtn}>
-                    <AiOutlineSearch size={22} />
+                    <AiOutlineSearch color={darkMode ? "white" : "black"} size={22} />
                 </button>
             </form>
 
@@ -191,10 +191,11 @@ const Header = () => {
                         </>
                         :
                         <>
-                            <button
-                                // onClick={() => navigate("/login")}
-                                className={styles.sign_up_header}
-                            >Login</button>
+                            <Link href='/login' style={{ textDecoration: "none", color: "white" }} >
+                                <button
+                                    className={styles.sign_up_header}
+                                >Login</button>
+                            </Link>
                         </>
                 }
             </div>

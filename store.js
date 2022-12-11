@@ -22,7 +22,7 @@ export const store = createStore(
   rootReducer,
   initalState,
   composeWithDevTools(applyMiddleware(...middleware))
-);
+);  
 
 // assigning store to next wrapper
 const makeStore = () => store;
