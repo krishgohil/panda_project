@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Modal } from 'react-bootstrap';
+import { Form, Modal, ToastContainer } from 'react-bootstrap';
 import { BsThreeDots, BsThreeDotsVertical } from 'react-icons/bs';
 import { FaRegEye, FaRegEyeSlash, FaRegStar, FaSearchLocation, FaStar } from 'react-icons/fa'
 import { FcCancel } from "react-icons/fc";
@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { host } from '../host';
 import { MdDelete } from 'react-icons/md';
 import { FaUserCircle } from 'react-icons/fa'
+import { toast } from 'react-toastify';
 
 const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
   const stars = Array(5).fill(0)
@@ -106,6 +107,21 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
   const postSS = () => {
     setstarRating(0)
     setmessage('')
+
+
+    if (!_id) {
+      return (
+        toast.error('Sign Up to use all features', {
+          position: "top-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+      )
+    }
     console.log(message)
     console.log(starRating)
 
@@ -141,6 +157,7 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
 
   return (
     <>
+    <ToastContainer />
       <div
       // style={!darkMode ? { backgroundColor: 'whitesmoke' } : { backgroundColor: 'rgb(14, 15, 16)' }}
       >
