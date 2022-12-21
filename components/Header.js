@@ -109,8 +109,8 @@ const Header = () => {
                     size={20}
                 // onClick={() => handleToggleSidebar()}
                 />
-                <img alt="img" className={styles.companyLogo} src="https://res.cloudinary.com/dmjoqk3ww/image/upload/v1668442060/emm8ons4w1bsfqzz0iwn.png" style={{ zIndex: 999 }} />
-                <span className={styles.companyName} style={darkMode ? { color: 'white', fontFamily: 'cursive', marginLeft: "1rem" } : { color: 'black', fontFamily: 'cursive', marginLeft: "1rem" }}  >
+                <img onClick={()=>{router.push("/")}} alt="img" className={styles.companyLogo} src="https://res.cloudinary.com/dmjoqk3ww/image/upload/v1668442060/emm8ons4w1bsfqzz0iwn.png" style={{ zIndex: 999 }} />
+                <span onClick={()=>{router.push("/")}} className={styles.companyName} style={darkMode ? { color: 'white', fontFamily: 'cursive', marginLeft: "1rem" } : { color: 'black', fontFamily: 'cursive', marginLeft: "1rem" }}  >
                     <b> <>
                         Ubout
                     </></b>

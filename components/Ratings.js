@@ -6,6 +6,7 @@ import { FcCancel } from "react-icons/fc";
 import { useDispatch } from 'react-redux';
 import { host } from '../host';
 import { MdDelete } from 'react-icons/md';
+import { FaUserCircle } from 'react-icons/fa'
 
 const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
   const stars = Array(5).fill(0)
@@ -144,10 +145,17 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
       // style={!darkMode ? { backgroundColor: 'whitesmoke' } : { backgroundColor: 'rgb(14, 15, 16)' }}
       >
         <div style={{ display: "flex", paddingTop: "0.5rem", marginLeft: "0.5rem", alignItems: 'center', }} >
-          <img alt="img" src={profileImg} style={{
-            height: '2.5rem',
-            width: '2.5rem', borderRadius: '50%', marginRight: '0.6rem'
-          }} ></img>
+          {
+            profileImg && profileImg !== "" ?
+              <img alt="img" src={profileImg} style={{
+                height: '2.5rem',
+                width: '2.5rem', borderRadius: '50%', marginRight: '0.6rem'
+              }} ></img> :
+              <FaUserCircle style={{
+                height: '2.5rem',
+                width: '2.5rem', borderRadius: '50%', marginRight: '0.6rem'
+              }} />
+          }
           <div style={{ margin: 0, display: 'flex', justifyContent: 'space-between', width: '80%' }}>
             <div style={{ margin: 0, display: 'flex', flexDirection: 'row', overflowY: 'scroll' }}>
 

@@ -9,9 +9,11 @@ import { useDispatch } from 'react-redux';
 import { host } from '../host';
 import { FaStar } from 'react-icons/fa'
 import styles from '../styles/about.module.css'
+import { useRouter } from 'next/router';
 
 const About = () => {
     const dispatch = useDispatch()
+    const router = useRouter()
 
     useEffect(() => {
         dispatch(fetchpeople())
@@ -42,7 +44,7 @@ const About = () => {
                     <img src="./icon-192x192.png" alt="" style={{ height: "44px", userSelect: "none" }} />
                     <h1 style={{ margin: 0, userSelect: "none" }} >Ubout</h1>
                 </div>
-                <button   className={`${styles.btn_grad} ${styles.diffbg}`} >Sign In</button>
+                <button className={`${styles.btn_grad} ${styles.diffbg}`} onClick={() => router.push('/signup')} >Sign In</button>
             </div>
 
             <div style={{ height: "100vh", width: "100vw", backgroundColor: "#fc0398", color: "white", display: "flex", justifyContent: "space-evenly", alignItems: "center", overflowY: "scroll", scrollMargin: "0" }} >
@@ -54,7 +56,7 @@ const About = () => {
                         <br />
                     </h1>
 
-                    <button className={`${styles.btn_grad} ${styles.diffbg}`} >Sign Up Now</button>
+                    <button className={`${styles.btn_grad} ${styles.diffbg}`} onClick={() => router.push('/signup')} >Sign Up Now</button>
 
                 </div>
 
@@ -149,7 +151,7 @@ const About = () => {
                             <br />
                         </h1>
 
-                        {/* <button className={`${styles.btn-grad} ${styles.diffbg}` diffbg' >Sign Up Now</button> */}
+                        {/* <button className={`${styles.btn-grad} ${styles.diffbg}` diffbg' onClick={()=>router.push('/signup')} >Sign Up Now</button> */}
 
                     </div>
 
@@ -166,7 +168,7 @@ const About = () => {
                             <br />
                         </h1>
 
-                        <button className={`${styles.btn_grad} ${styles.diffbg}`} >Sign Up Now</button>
+                        <button className={`${styles.btn_grad} ${styles.diffbg}`} onClick={() => router.push('/signup')} >Sign Up Now</button>
 
                     </div>
 

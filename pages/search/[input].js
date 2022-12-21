@@ -37,6 +37,12 @@ const Search = () => {
 
         // console.log(displayDarkMode, "ok", darkMode)
         setdarkMode(displayDarkMode)
+        if(displayDarkMode){
+            document.getElementsByTagName("body")[0].style.backgroundColor = "black"
+        }else{
+            document.getElementsByTagName("body")[0].style.backgroundColor = "white"
+        }
+
     }, [displayDarkMode])
 
     const handleSubmit = e => {

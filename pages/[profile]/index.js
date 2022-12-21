@@ -20,6 +20,7 @@ import { AiOutlineShareAlt } from 'react-icons/ai';
 import QrCode from '../../components/QrCode';
 import Ratings from '../../components/Ratings';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 const Profile = (props) => {
   const router = useRouter();
 
@@ -340,23 +341,22 @@ const Profile = (props) => {
         formData.append(`linkFullScreen${i}`, tempLinks[i].fullWidth)
         formData.append(`linkDate${i}`, tempLinks[i].date)
       } else if (typeof tempLinks[i].image == "object") {
-        const data = new FormData()
-        data.append("file", tempLinks[i].image)
-        data.append("upload_preset", "l0nuoz4a")
+        const dat = new FormData()
+        dat.append("file", tempLinks[i].image)
+        dat.append("upload_preset", "l0nuoz4a")
 
-        fetch("https://api.cloudinary.com/v1_1/dmjoqk3ww/image/upload", {
-          method: "post",
-          body: data
-        })
-          .then(resp => resp.json())
-          .then(data => {
-            console.log(data)
-            formData.append(`linkImg${i}`, data.secure_url)
-            formData.append(`linkTitle${i}`, tempLinks[i].title)
-            formData.append(`linkUrl${i}`, tempLinks[i].url)
-            formData.append(`linkFullScreen${i}`, tempLinks[i].fullWidth)
-            formData.append(`linkDate${i}`, tempLinks[i].date)
-          })
+        const response = await fetch("https://api.cloudinary.com/v1_1/dmjoqk3ww/image/upload", {
+          method: 'POST',
+          body: dat
+        });
+        const json = await response.json();
+
+        console.log(json)
+        formData.append(`linkImg${i}`, json.secure_url)
+        formData.append(`linkTitle${i}`, tempLinks[i].title)
+        formData.append(`linkUrl${i}`, tempLinks[i].url)
+        formData.append(`linkFullScreen${i}`, tempLinks[i].fullWidth)
+        formData.append(`linkDate${i}`, tempLinks[i].date)
       }
       // formData.append(`linkImg${i}`, tempLinks[i].image)
       // formData.append(`linkTitle${i}`, tempLinks[i].title)
@@ -365,7 +365,7 @@ const Profile = (props) => {
       // formData.append(`linkDate${i}`, tempLinks[i].date)
 
     }
-
+    console.log("feedfdlk")
     const response = await fetch(`${host}/api/editprofile`, {
       method: 'POST',
       body: formData
@@ -496,6 +496,19 @@ const Profile = (props) => {
                 style={darkMode ? { backgroundColor: "#1b1a1a" } : { backgroundColor: "whitesmoke" }}
 
               >Edit Profile</button>
+
+              <button className='topBtn' onClick={() => {
+                window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/settings`, url: `/${router.query.profile}/settings` }, '', `/${router.query.profile}/settings`);
+                document.getElementById("linkRow").style.display = 'none'
+                setcnt(cnt + 1)
+              }}
+                style={darkMode ? { backgroundColor: "#1b1a1a" } : { backgroundColor: "whitesmoke" }}
+
+              >
+                <MdSettings size={24} />
+
+
+              </button>
 
               {/* <div className="one-quarter" id="switch">
                         <input onChange={() => {
@@ -707,7 +720,7 @@ const Profile = (props) => {
 
           }} to={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/edit` || editing ? "edit/ratings" : "ratings"} className={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/ratings` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"}  >Ratings</div>
 
-          {
+          {/* {
             searchedProfile._id == _id && !editing ?
               <div to='settings' className={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/settings` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"} onClick={() => {
                 window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/settings`, url: `/${router.query.profile}/settings` }, '', `/${router.query.profile}/settings`);
@@ -717,7 +730,7 @@ const Profile = (props) => {
                 <MdSettings size={24} />
               </div>
               : ""
-          }
+          } */}
 
 
           {
@@ -1135,10 +1148,10 @@ const Profile = (props) => {
             typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/settings` && searchedProfile._id == _id ?
               <div className={darkMode ? "linkCard_dm" : "linkCard"} style={{ fontWeight: "600", whiteSpace: 'pre-wrap', wordBreak: "break-word", width: "100%", padding: "1rem", marginBottom: "2rem", backgroundColor: "" }}  >
 
-                <p style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer" }} >Terms of Service</p>
-                <p style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer" }} >Privacy</p>
-                <p style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer" }} >About</p>
-                <p style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer" }} >@All right reserved</p>
+                <Link href='/terms-of-service' style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer", display: 'block', textDecoration: "none" }} >Terms of Service</Link>
+                <Link href='/privacy' style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer", display: 'block', textDecoration: "none" }} >Privacy</Link>
+                <Link href='/about' style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer", display: 'block', textDecoration: "none" }} >About</Link>
+                <p style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer", display: 'block', textDecoration: "none" }} >@All right reserved</p>
               </div>
               : ""
           }
@@ -1152,7 +1165,8 @@ const Profile = (props) => {
 
 
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", margin: "1rem 0 ", position: "relative", bottom: 0 }} >
-          <h5 style={{ margin: 0 }} >Ubout</h5>
+          <h5 onClick={() => window.open("https://ubout.vercel.app/about", '_blank')
+          } style={{ margin: 0 }} >Ubout</h5>
           <img src="./favicon.ico" style={{ width: "30px", height: "30px", marginLeft: "0.5rem" }} alt="" />
 
 
@@ -1222,9 +1236,19 @@ const Profile = (props) => {
               </div>
               <QrCode value={`${host}/${searchedProfile.username}`} title={`${searchedProfile.username}`} />
               <div style={{ display: "flex", alignItems: "center", marginTop: '2rem', border: "1px solid gray", padding: "0.5rem", borderRadius: '6px' }} >
-                <input type="text" value={`${host}/${searchedProfile.username}`} style={{ overflowX: "scroll", scrollMargin: 0, width: "90%", border: "none" }} disabled={true} />
+                <input type="text" value={`${host}/${searchedProfile.username}`} style={{ overflowX: "scroll", scrollMargin: 0, width: "90%", border: "none", color: "black" }} disabled={true} />
                 <MdContentCopy onClick={() => {
                   navigator.clipboard.writeText(`${host}/${searchedProfile.username}`)
+                  toast.success('Copied', {
+                    position: "top-left",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+
+                  })
                 }} size={20} style={{ marginLeft: "4px" }} />
               </div>
               <div style={{ display: "flex", alignItems: "center", marginTop: '2rem' }} >
