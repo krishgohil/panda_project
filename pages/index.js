@@ -12,6 +12,7 @@ import { FEED_DATA_STORE } from '../actionType'
 import { host } from '../host'
 import Router from 'next/router'
 import Link from 'next/link'
+import CategoriesBar from '../components/CategoriesBar'
 
 export default function Home(props) {
 
@@ -109,13 +110,51 @@ export default function Home(props) {
     dispatch(fetchpeople())
   }
 
+  async function getCountries() {
+
+    const response = await fetch(`https://restcountries.com/v3.1/all`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const json = await response.json();
+    // console.log(json)
+
+    for (let i = 0; i < json.length; i++) {
+
+      console.log(json[i].name.common)
+      console.log(json[i].name.official)
+      console.log(json[i].flags.svg)
+      console.log(json[i].population)
+      console.log("")
+
+
+      let sortit = json.sort(function (a, b) {
+        return (a.population < b.population) ? 1 : ((a.population > b.population) ? -1 : 0);
+      });
+
+      console.log(sortit)
+
+    }
+  }
+
+  useEffect(() => {
+
+    // getCountries()
+  }, [])
+
+
+
+
 
 
 
   return (
     <>
 
-      <Header />
+      {/* <Header /> */}
+      <CategoriesBar />
 
       <Container onClick={() => {
         console.log(feed_Data)
@@ -233,7 +272,7 @@ export default function Home(props) {
                   lg={4} md={4} xs={6} key={i} style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
                   <Link scroll={false} href={`/${peep.username}`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
                     <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
-                      <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0",backgroundColor:"rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0",backgroundColor:"rgb(214,214,214)" }} >
+                      <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(214,214,214)" }} >
                         <img className={styles.img} src={peep.profileImg} alt="" />
                       </div>
 

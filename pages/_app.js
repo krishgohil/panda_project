@@ -8,6 +8,8 @@ import { host } from "../host";
 import { useEffect } from "react";
 import 'react-toastify/dist/ReactToastify.min.css';
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import "../styles/categoriesBar.css"
+import Header from "../components/Header";
 function MyApp({ Component, pageProps }) {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -67,6 +69,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <GoogleOAuthProvider clientId="87939184502-dvrtpsvn23tj3comolg0hcm6r8trqqvd.apps.googleusercontent.com">
         <Provider store={store}>
+          <Header></Header>
           <Component {...pageProps} />
         </Provider>
       </GoogleOAuthProvider>

@@ -6,7 +6,7 @@
 
 
   margin: auto;
-  padding: 0.5rem 0 3rem 0;
+  
 
 
   display: flex;
@@ -31,7 +31,7 @@
   margin: auto;
   overflow-y: scroll;
   scroll-margin: 0;
-  padding: 0.5rem 0 3rem 0;
+  
   background-color: white;
   color: black;
 
