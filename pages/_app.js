@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "../styles/categoriesBar.css"
 import Header from "../components/Header";
+import CategoriesBar from "../components/CategoriesBar";
 function MyApp({ Component, pageProps }) {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -70,6 +71,8 @@ function MyApp({ Component, pageProps }) {
       <GoogleOAuthProvider clientId="87939184502-dvrtpsvn23tj3comolg0hcm6r8trqqvd.apps.googleusercontent.com">
         <Provider store={store}>
           <Header></Header>
+          <CategoriesBar />
+
           <Component {...pageProps} />
         </Provider>
       </GoogleOAuthProvider>

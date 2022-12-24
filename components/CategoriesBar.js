@@ -1,25 +1,28 @@
 import Router, { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 
-const CategoriesBar = ({ extra,sethomeScroll }) => {
+const CategoriesBar = ({ extra, sethomeScroll }) => {
+    const { displayDarkMode } = useSelector(state => state.feed)
+
+    const [darkMode, setdarkMode] = useState(false)
+
     useEffect(() => {
-        let el = document.getElementById("content")
-        el.scrollLeft = el.scrollWidth;
-    }, [extra])
-
-
+        setdarkMode(displayDarkMode)
+    }, [displayDarkMode])
     const keywords = [
         'Countries',
-        'Fun',
-        'News',
-        'Science-Tech',
-        'Crypto',
+        'Places',
+        'Colleges',
+        'Restaurants',
+        'Companies',
+        'Books',
+        'Hotels',
         'Sports',
-        'Movies',
+        'Shows',
         'Stocks',
         'Books',
-        'Destress',
         'Youtube',
     ]
 
@@ -32,7 +35,7 @@ const CategoriesBar = ({ extra,sethomeScroll }) => {
 
 
     return (
-        <div className='categoriesBar' id='content' >
+        <div className='categoriesBar' style={darkMode ? { backgroundColor: "black" } : { backgroundColor: 'white' }} id='content' >
 
             {
                 keywords.map((value, i) => (
@@ -41,7 +44,7 @@ const CategoriesBar = ({ extra,sethomeScroll }) => {
                         // to={`/upp/${value}`.toLowerCase()}
                         // to={'/upp'value.toLowerCase()} 
                         onClick={() => goto(value)}
-                        style={  { textDecoration: 'none', color: 'black',backgroundColor:"whitesmoke" }} key={i} className='too' >
+                        style={darkMode ? { textDecoration: 'none', color: 'white', backgroundColor: "black" } : { textDecoration: 'none', color: 'black', backgroundColor: "whitesmoke" }} key={i} className={darkMode ? "too":"too_dm"} >
                         {value}
                     </div>
                 ))

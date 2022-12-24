@@ -154,7 +154,6 @@ export default function Home(props) {
     <>
 
       {/* <Header /> */}
-      <CategoriesBar />
 
       <Container onClick={() => {
         console.log(feed_Data)
