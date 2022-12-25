@@ -1,7 +1,5 @@
 import React, { useRef } from 'react'
 import { useState } from 'react';
-import { GET_USER_DETAILS, } from '../actionType';
-import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
 import { AiFillCheckCircle, AiOutlineMail } from 'react-icons/ai'
@@ -22,7 +20,6 @@ const Signup = (props) => {
   const [wait, setwait] = useState(false)
 
   const [credentials, setcredentials] = useState({ _name: "", username: "", _email: "", password: "", bio: "", profileImg: "", _confirmPass: "", birthDate: "", gender: "" })
-  const dispatch = useDispatch()
   const onchange = (e) => {
     setcredentials({ ...credentials, [e.target.name]: e.target.value });
   }
@@ -70,7 +67,7 @@ const Signup = (props) => {
 
     if (googleSignIn) {
       // alert("chanda bhi diwana hai tera")
-      dispatch(signup_oauth_verify(googleDetails.name, googleDetails.email, credentials.username))
+      signup_oauth_verify(googleDetails.name, googleDetails.email, credentials.username)
 
 
     } else {
@@ -233,7 +230,7 @@ const Signup = (props) => {
 
 
       setmail(email)
-      dispatch(signUp(name, email, password, username.toLowerCase()))
+    signUp(name, email, password, username.toLowerCase())
     }
 
   }
@@ -244,7 +241,7 @@ const Signup = (props) => {
 
 
 
-  const signUp = (name, email, password, username) => async dispatch => {
+  async function signUp  (name, email, password, username)  {
     console.log(username)
     try {
       const response = await fetch(`${host}/api/signup`, {
@@ -265,25 +262,25 @@ const Signup = (props) => {
         // navigate(`/${json.user.username}`)
         console.log(' successsssssssssssss')
 
-        dispatch({
-          type: GET_USER_DETAILS,
-          payload: {
-            name: json.user.name,
-            profileImg: json.user.profileImg,
-            username: json.user.username,
-            about: json.user.about,
-            _id: json.user._id,
-            ratings: json.user.ratings,
-            accountType: json.user.accountType,
-            notificationToken: json.user.notificationToken,
-            notificationSettings: json.user.notificationSettings,
-            notificationCount: json.user.notificationCount,
-            links: json.user.links,
-            totalRating: json.user.totalRating,
-            avgRating: json.user.avgRating,
+        // dispatch({
+        //   type: GET_USER_DETAILS,
+        //   payload: {
+        //     name: json.user.name,
+        //     profileImg: json.user.profileImg,
+        //     username: json.user.username,
+        //     about: json.user.about,
+        //     _id: json.user._id,
+        //     ratings: json.user.ratings,
+        //     accountType: json.user.accountType,
+        //     notificationToken: json.user.notificationToken,
+        //     notificationSettings: json.user.notificationSettings,
+        //     notificationCount: json.user.notificationCount,
+        //     links: json.user.links,
+        //     totalRating: json.user.totalRating,
+        //     avgRating: json.user.avgRating,
 
-          }
-        })
+        //   }
+        // })
         router.push(`/${json.user.username}`)
       }
       else if (json.error === "email_exists") {
@@ -342,7 +339,7 @@ const Signup = (props) => {
       let x = credentials.username.replace(/\s\s+/g, ' ')
       if (x.length > 0) {
         setshowCont(false)
-        dispatch(usernameCheck())
+        usernameCheck()
         console.log("HERE")
       }
     }, 1000);
@@ -355,7 +352,7 @@ const Signup = (props) => {
   }
 
 
-  const usernameCheck = (name, email, password, username) => async dispatch => {
+  async function usernameCheck  (name, email, password, username) {
     const response = await fetch(`${host}/api/auth/usernameCheck`, {
       method: 'PUT',
 
@@ -376,7 +373,7 @@ const Signup = (props) => {
   }
 
 
-  const signup_oauth_verify = (name, email, username) => async dispatch => {
+  async  function signup_oauth_verify (name, email, username)  {
     console.log(username)
     try {
       const response = await fetch(`${host}/api/auth/signup-oauth-verify`, {
@@ -391,29 +388,29 @@ const Signup = (props) => {
       console.log('k', json)
 
       if (json.message == "email_exists") {
-        dispatch({
-          type: GET_USER_DETAILS,
-          payload: {
-            name: json.details.name,
-            profileImg: json.details.profileImg,
-            username: json.details.username,
-            about: json.details.about,
-            _id: json.details._id,
-            ratings: json.details.ratings,
-            accountType: json.details.accountType,
-            notificationToken: json.details.notificationToken,
-            notificationSettings: json.details.notificationSettings,
-            notificationCount: json.details.notificationCount,
-            links: json.details.links,
-            totalRating: json.details.totalRating,
-            avgRating: json.details.avgRating,
-            profileVisits: json.details.profileVisits,
-            uniqueProfileVisits: json.details.uniqueProfileVisits,
-            referrers: json.details.referrers,
-            totalLinkClicks: json.details.totalLinkClicks,
-            darkModeProfile: json.details.darkModeProfile
-          }
-        })
+        // dispatch({
+        //   type: GET_USER_DETAILS,
+        //   payload: {
+        //     name: json.details.name,
+        //     profileImg: json.details.profileImg,
+        //     username: json.details.username,
+        //     about: json.details.about,
+        //     _id: json.details._id,
+        //     ratings: json.details.ratings,
+        //     accountType: json.details.accountType,
+        //     notificationToken: json.details.notificationToken,
+        //     notificationSettings: json.details.notificationSettings,
+        //     notificationCount: json.details.notificationCount,
+        //     links: json.details.links,
+        //     totalRating: json.details.totalRating,
+        //     avgRating: json.details.avgRating,
+        //     profileVisits: json.details.profileVisits,
+        //     uniqueProfileVisits: json.details.uniqueProfileVisits,
+        //     referrers: json.details.referrers,
+        //     totalLinkClicks: json.details.totalLinkClicks,
+        //     darkModeProfile: json.details.darkModeProfile
+        //   }
+        // })
         localStorage.setItem("utoken", json.accessToken);
 
         // navigate("/")
@@ -442,7 +439,7 @@ const Signup = (props) => {
 
     }
   }
-  const signup_oauth = () => async dispatch => {
+  async function signup_oauth  () {
     try {
       const response = await fetch(`${host}/api/auth/signup-oauth`, {
         method: 'PUT',
@@ -459,29 +456,29 @@ const Signup = (props) => {
       console.log('k', json)
 
       if (json.message == "success") {
-        dispatch({
-          type: GET_USER_DETAILS,
-          payload: {
-            name: json.details.name,
-            profileImg: json.details.profileImg,
-            username: json.details.username,
-            about: json.details.about,
-            _id: json.details._id,
-            ratings: json.details.ratings,
-            accountType: json.details.accountType,
-            notificationToken: json.details.notificationToken,
-            notificationSettings: json.details.notificationSettings,
-            notificationCount: json.details.notificationCount,
-            links: json.details.links,
-            totalRating: json.details.totalRating,
-            avgRating: json.details.avgRating,
-            profileVisits: json.details.profileVisits,
-            uniqueProfileVisits: json.details.uniqueProfileVisits,
-            referrers: json.details.referrers,
-            totalLinkClicks: json.details.totalLinkClicks,
-            darkModeProfile: json.details.darkModeProfile
-          }
-        })
+        // dispatch({
+        //   type: GET_USER_DETAILS,
+        //   payload: {
+        //     name: json.details.name,
+        //     profileImg: json.details.profileImg,
+        //     username: json.details.username,
+        //     about: json.details.about,
+        //     _id: json.details._id,
+        //     ratings: json.details.ratings,
+        //     accountType: json.details.accountType,
+        //     notificationToken: json.details.notificationToken,
+        //     notificationSettings: json.details.notificationSettings,
+        //     notificationCount: json.details.notificationCount,
+        //     links: json.details.links,
+        //     totalRating: json.details.totalRating,
+        //     avgRating: json.details.avgRating,
+        //     profileVisits: json.details.profileVisits,
+        //     uniqueProfileVisits: json.details.uniqueProfileVisits,
+        //     referrers: json.details.referrers,
+        //     totalLinkClicks: json.details.totalLinkClicks,
+        //     darkModeProfile: json.details.darkModeProfile
+        //   }
+        // })
         localStorage.setItem("utoken", json.accessToken);
 
         // navigate(`/${json.details.username}`)
@@ -542,7 +539,7 @@ const Signup = (props) => {
                   {
                     showCont ?
                       <button onClick={() => {
-                        dispatch(signup_oauth())
+                       signup_oauth()
                       }
                       } ref={sbmt} type="submit/" className="btn btn-primary" >Continue</button> : <>
                         <div style={{ textAlign: "center", width: "100%", padding: 0, display: "flex", justifyContent: "center", height: "50px" }} >

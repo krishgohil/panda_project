@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import { AiFillCheckCircle, AiOutlineMail } from 'react-icons/ai'
 import { MdOutlineLock } from 'react-icons/md'
 import { ToastContainer, toast } from 'react-toastify';
@@ -38,7 +37,6 @@ const Login = () => {
 
 
 
-  const dispatch = useDispatch()
 
   const router = useRouter()
 
@@ -130,7 +128,7 @@ const Login = () => {
 
 
     console.log(email, password)
-    dispatch(log_in(email, password))
+    log_in(email, password)
   }
 
   const forgotfunc = () => {
@@ -142,7 +140,7 @@ const Login = () => {
     // 
   }
 
-  const log_in = (email, password) => async dispatch => {
+  async function log_in (email, password){
     try {
       console.log("ramam rmama", email, password)
       const response = await fetch(`${host}/api/login`, {
@@ -173,24 +171,24 @@ const Login = () => {
           localStorage.setItem("utoken", json.accessToken);
           // localStorage.setItem("user id", json.user._id);
 
-          dispatch({
-            type: GET_USER_DETAILS,
-            payload: {
-              name: json.user.name,
-              profileImg: json.user.profileImg,
-              username: json.user.username,
-              about: json.user.about,
-              _id: json.user._id,
-              ratings: json.user.ratings,
-              accountType: json.user.accountType,
-              notificationToken: json.user.notificationToken,
-              notificationSettings: json.user.notificationSettings,
-              notificationCount: json.user.notificationCount,
-              links: json.user.links,
-              totalRating: json.user.totalRating,
-              avgRating: json.user.avgRating,
-            }
-          })
+          // dispatch({
+          //   type: GET_USER_DETAILS,
+          //   payload: {
+          //     name: json.user.name,
+          //     profileImg: json.user.profileImg,
+          //     username: json.user.username,
+          //     about: json.user.about,
+          //     _id: json.user._id,
+          //     ratings: json.user.ratings,
+          //     accountType: json.user.accountType,
+          //     notificationToken: json.user.notificationToken,
+          //     notificationSettings: json.user.notificationSettings,
+          //     notificationCount: json.user.notificationCount,
+          //     links: json.user.links,
+          //     totalRating: json.user.totalRating,
+          //     avgRating: json.user.avgRating,
+          //   }
+          // })
           router.push("/")
         }, 1800);
 
@@ -322,7 +320,6 @@ export default Login
 
 
 export const ForgotPassword = () => {
-  const dispatch = useDispatch()
 
   const [emailsent, setemailsent] = useState(false)
   const [email, setemail] = useState('')
@@ -339,10 +336,10 @@ export const ForgotPassword = () => {
     console.log(email, "email")
     setdisablebtn(true)
     setshowLoader(true)
-    dispatch(resetpassword())
+    resetpassword()
   }
 
-  const resetpassword = () => async dispatch => {
+  async function resetpassword ()  {
     const response = await fetch(`${host}/api/auth/resetpassword`, {
       method: 'PUT',
       headers: {

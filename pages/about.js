@@ -5,22 +5,20 @@ import { Col, Container, Row } from 'react-bootstrap'
 // import { FaStar } from 'react-icons/fa'
 // import { host } from '../../Host'
 import { MdOutlineCopyright } from 'react-icons/md'
-import { useDispatch } from 'react-redux';
 import { host } from '../host';
 import { FaStar } from 'react-icons/fa'
 import styles from '../styles/about.module.css'
 import { useRouter } from 'next/router';
 
 const About = () => {
-    const dispatch = useDispatch()
     const router = useRouter()
 
     useEffect(() => {
-        dispatch(fetchpeople())
+       fetchpeople()
     }, [])
 
     const [people, setpeople] = useState([])
-    const fetchpeople = () => async dispatch => {
+    async function fetchpeople ()  {
         const response = await fetch(`${host}/api/fetchpeople`, {
             method: 'PUT',
             headers: {
