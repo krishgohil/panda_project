@@ -4,7 +4,6 @@ import { Button, Col, Container, Row, Navbar, Modal, FloatingLabel, Spinner, Clo
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { useDispatch, useSelector } from 'react-redux';
 import { FaImage, FaMoon, FaRegEdit, FaSun, FaWhatsapp, } from 'react-icons/fa'
 import { FcCancel } from 'react-icons/fc'
 
@@ -21,12 +20,16 @@ import QrCode from '../../components/QrCode';
 import Ratings from '../../components/Ratings';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useAppContext, useFeedContext } from '../../context';
+import Head from 'next/head';
 const Profile = (props) => {
   const router = useRouter();
 
-  // const { router.query.profile } = useRouter()
-  const { username, name, _id, profileImg, about, guest, links, } = useSelector(state => state.auth)
-  const dispatch = useDispatch()
+  const context = useAppContext()
+  const context_feed = useFeedContext()
+
+  const { username, name, _id, profileImg, about, guest, links } = context.sharedState
+  const { displayDarkMode, feed_Data } = context_feed.feedstate
 
   const [searchedProfile, setsearchedProfile] = useState(props.fetchuniqueser)
   const [tempLinks, settempLinks] = useState(props.fetchuniqueser.links)
@@ -65,12 +68,6 @@ const Profile = (props) => {
 
 
   useEffect(() => {
-
-    console.log("krish")
-    if (window.location.pathname !== `/${router.query.profile}`) {
-      window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}`, url: `/${router.query.profile}` }, '', `/${router.query.profile}`);
-      setcnt(cnt + 1)
-    }
 
   }, [])
 
@@ -136,7 +133,7 @@ const Profile = (props) => {
 
 
   useEffect(() => {
-    if (searchedProfile && typeof window !== 'undefined' && window.location.pathname !== `/${searchedProfile.username}/analytics` && !showProfile) {
+    if (searchedProfile && typeof window !== 'undefined' && router.asPath !== `/${searchedProfile.username}/analytics` && !showProfile) {
       setshowProfile(true)
     }
 
@@ -205,7 +202,7 @@ const Profile = (props) => {
       setdarkMode(false)
     }
 
-    if (typeof window !== 'undefined' && window.location.pathname !== `/${json.fetchuniqueser.username}`) {
+    if (typeof window !== 'undefined' && router.asPath !== `/${json.fetchuniqueser.username}`) {
       router.push(`/${json.fetchuniqueser.username}`)
 
     }
@@ -373,7 +370,13 @@ const Profile = (props) => {
     const json = await response.json();
     console.log(json)
 
-    // setediting(false)
+
+    settempUserInfo({ ...tempUserInfo, username: json.username, about: json.about, name: json.name, profileImg: json.profileImg, darkMode: json.darkModeProfile, profBg: json.backgroundImage, profession: json.profession })
+    setsearchedProfile(json)
+    settempLinks(json.links)
+    setoriginalLinks(json.links)
+    settempprofession(json.profession)
+    setediting(false)
   }
 
 
@@ -441,7 +444,7 @@ const Profile = (props) => {
   useEffect(() => {
     console.log(searchedProfile.links)
     console.log(editing)
-    console.log(window.location.pathname)
+    console.log(router.asPath)
     console.log('useEffect fired!', { asPath: router.asPath });
 
 
@@ -451,7 +454,14 @@ const Profile = (props) => {
 
   return (
     <>
-
+      <Head>
+        <title> {searchedProfile.name} (@{searchedProfile.username}) / Ubout </title>
+        <meta name="description" content={`About: ${searchedProfile.about}`} />
+        <meta
+          name="keywords"
+          content={`${searchedProfile.name},${searchedProfile.username}`}
+        />
+      </Head>
       <div id='profile' className={darkMode ? 'profileBg_dm' : 'profileBg'}
       // style={{ background: profBg }}
       >
@@ -478,9 +488,7 @@ const Profile = (props) => {
               <button className='topBtn' onClick={() => {
                 setshowProfile(false)
                 // navigate("")
-                router.push(`${router.query.profile}/analytics`)
-                // window.history.replaceState({ ...window.history.state, as: `${router.query.profile}/analytics`, url: `${router.query.profile}/analytics` }, '', `${router.query.profile}/analytics`);
-
+                router.push(`/${searchedProfile.username}/analytics`)
 
               }
               }
@@ -488,7 +496,10 @@ const Profile = (props) => {
               >Analytics</button>
               <button className='topBtn' onClick={() => {
                 setediting(true)
-                window.history.replaceState({ ...window.history.state, as: `/${searchedProfile.username}/edit`, url: `/${searchedProfile.username}/edit` }, '', `/${searchedProfile.username}/edit`);
+                router.replace({
+                  pathname: `/${searchedProfile.username}`,
+                }, undefined, { shallow: true }
+                )
                 setcnt(cnt + 1)
                 // router.push(`${router.query.profile}/edit`)
               }
@@ -498,7 +509,14 @@ const Profile = (props) => {
               >Edit Profile</button>
 
               <button className='topBtn' onClick={() => {
-                window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/settings`, url: `/${router.query.profile}/settings` }, '', `/${router.query.profile}/settings`);
+                router.replace({
+                  pathname: `/${searchedProfile.username}`,
+                  query: {
+                    tab: 'settings',
+                    // edit: false
+                  }
+                }, undefined, { shallow: true }
+                )
                 document.getElementById("linkRow").style.display = 'none'
                 setcnt(cnt + 1)
               }}
@@ -510,23 +528,6 @@ const Profile = (props) => {
 
               </button>
 
-              {/* <div className="one-quarter" id="switch">
-                        <input onChange={() => {
-                          document.getElementsByTagName("body")[0].style.backgroundColor = "black"
-                          if (!darkMode) {
-                            document.getElementsByTagName("body")[0].style.backgroundColor = "black"
-                            setdarkMode(true)
-                          } else {
-                            document.getElementsByTagName("body")[0].style.backgroundColor = "white"
-                            setdarkMode(false)
-                          }
-                        }} type="checkbox" className="checkbox" id="chk" checked={darkMode} />
-                        <label className="label" htmlFor="chk">
-                          <i className="fas fa-moon" style={{ fontSize: "8px" }} ><FaMoon /></i>
-                          <i className="fas fa-sun" style={{ fontSize: "9px" }} ><FaSun /></i>
-                          <div className="ball"></div>
-                        </label>
-                      </div> */}
 
             </div> :
             ""
@@ -541,6 +542,7 @@ const Profile = (props) => {
                 console.log(searchedProfile.links)
                 console.log(originalLinks)
                 settempLinks(searchedProfile.links)
+
                 if (searchedProfile.darkModeProfile) {
                   document.getElementsByTagName("body")[0].style.backgroundColor = "black"
                 } else {
@@ -550,15 +552,22 @@ const Profile = (props) => {
                 document.getElementById("profile").style.background = `url(${searchedProfile.backgroundImage})`
 
                 // navigate(`/${searchedProfile.username}`)
-                window.history.replaceState({ ...window.history.state, as: `/${searchedProfile.username}`, url: `/${searchedProfile.username}` }, '', `/${searchedProfile.username}`);
+                router.replace({
+                  pathname: `/${searchedProfile.username}`,
+                  query: null
+                }, undefined, { shallow: true }
+                )
                 setcnt(cnt + 1)
               }
               }
                 style={{ margin: "0.5rem 0 ", fontWeight: "500", fontSize: "14px", padding: "0.35rem 1rem", border: "none", backgroundColor: "", borderRadius: "1rem", border: "none" }}
               >Cancel</button>
+
+
+
               <div className="one-quarter" id="switch">
                 <input onChange={() => {
-                  document.getElementsByTagName("body")[0].style.backgroundColor = "black"
+                  // document.getElementsByTagName("body")[0].style.backgroundColor = "black"
                   if (!darkMode) {
                     document.getElementsByTagName("body")[0].style.backgroundColor = "black"
                     setdarkMode(true)
@@ -659,11 +668,19 @@ const Profile = (props) => {
         <div id='krish' className='segmain'   >
           <div ref={ref1} onClick={() => {
             if (editing) {
-              window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/edit`, url: `/${router.query.profile}/edit` }, '', `/${router.query.profile}/edit`);
+              router.replace({
+                pathname: `/${searchedProfile.username}`,
+                query: null
+              }, undefined, { shallow: true }
+              )
               document.getElementById("linkRow").style.display = 'none'
               setcnt(cnt + 1)
             } else {
-              window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}`, url: `/${router.query.profile}` }, '', `/${router.query.profile}`);
+              router.replace({
+                pathname: `/${searchedProfile.username}`,
+                query: null
+              }, undefined, { shallow: true }
+              )
               document.getElementById("linkRow").style.display = 'flex'
               document.getElementById("linkRow").style.justifyContent = 'center'
 
@@ -672,30 +689,45 @@ const Profile = (props) => {
             }
 
           }}
-            to={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/edit` || editing ? "edit" : ""} className={typeof window !== 'undefined' && (window.location.pathname == `/${searchedProfile.username}` || window.location.pathname == `/${searchedProfile.username}/links`) ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"}
+            className={(router.asPath == `/${searchedProfile.username}` || router.asPath == `/${searchedProfile.username}/links`) ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"}
           >Links</div>
 
 
 
           <div ref={ref2} onClick={() => {
-            console.log(window.location.pathname)
+            console.log(router.asPath)
 
-            // router.replace({ ...window.history.state, as: `/${router.query.profile}/about`, url: `/${router.query.profile}/about` }, '', `/${router.query.profile}/about`)
+
             if (editing) {
-              window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/edit/about`, url: `/${router.query.profile}/edit/about` }, '', `/${router.query.profile}/edit/about`);
+              router.replace({
+                pathname: `/${searchedProfile.username}`,
+                query: {
+                  tab: 'about',
+                  // edit: false
+                }
+              }, undefined, { shallow: true }
+              )
+
               document.getElementById("linkRow").style.display = 'none'
 
 
               setcnt(cnt + 1)
             } else {
-              window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/about`, url: `/${router.query.profile}/about` }, '', `/${router.query.profile}/about`);
+              router.replace({
+                pathname: `/${searchedProfile.username}`,
+                query: {
+                  tab: 'about',
+                  // edit: false
+                }
+              }, undefined, { shallow: true }
+              )
               document.getElementById("linkRow").style.display = 'none'
 
 
               setcnt(cnt + 1)
             }
           }}
-            className={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/about` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : "segment"}  >About</div>
+            className={typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}?tab=about` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : "segment"}  >About</div>
 
 
 
@@ -707,39 +739,51 @@ const Profile = (props) => {
 
 
             if (editing) {
-              window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/edit/ratings`, url: `/${router.query.profile}/edit/ratings` }, '', `/${router.query.profile}/edit/ratings`);
+              router.replace({
+                pathname: `/${searchedProfile.username}`,
+                query: {
+                  tab: 'ratings',
+                  // edit: false
+                }
+              }, undefined, { shallow: true }
+              )
+
               document.getElementById("linkRow").style.display = 'none'
 
 
               setcnt(cnt + 1)
             } else {
-              window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/ratings`, url: `/${router.query.profile}/ratings` }, '', `/${router.query.profile}/ratings`);
+              router.replace({
+                pathname: `/${searchedProfile.username}`,
+                query: {
+                  tab: 'ratings',
+                  // edit: false
+                }
+              }, undefined, { shallow: true }
+              )
               document.getElementById("linkRow").style.display = 'none'
               setcnt(cnt + 1)
             }
 
-          }} to={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/edit` || editing ? "edit/ratings" : "ratings"} className={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/ratings` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"}  >Ratings</div>
+          }} className={typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}?tab=ratings` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"}  >Ratings</div>
 
-          {/* {
-            searchedProfile._id == _id && !editing ?
-              <div to='settings' className={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/settings` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"} onClick={() => {
-                window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/settings`, url: `/${router.query.profile}/settings` }, '', `/${router.query.profile}/settings`);
-                document.getElementById("linkRow").style.display = 'none'
-                setcnt(cnt + 1)
-              }}  >
-                <MdSettings size={24} />
-              </div>
-              : ""
-          } */}
+
 
 
           {
             editing ?
               <div onClick={() => {
-                window.history.replaceState({ ...window.history.state, as: `/${router.query.profile}/edit/appearance`, url: `/${router.query.profile}/edit/appearance` }, '', `/${router.query.profile}/edit/appearance`);
+                router.replace({
+                  pathname: `/${searchedProfile.username}`,
+                  query: {
+                    tab: 'appearance',
+                    // edit: true
+                  }
+                }, undefined, { shallow: true }
+                )
                 document.getElementById("linkRow").style.display = 'none'
                 setcnt(cnt + 1)
-              }} className={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/appearance` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"}  >
+              }} className={typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}/appearance` ? `segactive segment ${darkMode ? 'segdm' : 'seglg'}` : " segment"}  >
                 <BsStars color={darkMode ? 'cyan' : "blue"} size={22} />
               </div> :
               ""
@@ -751,7 +795,7 @@ const Profile = (props) => {
         </div>
 
         {
-          searchedProfile._id == _id && editing && typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/edit` ?
+          searchedProfile._id == _id && editing && typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}/edit` ?
             <div style={{ width: "50%", margin: " 0.5rem auto", border: "1px solid gray", borderRadius: "1rem" }} className={darkMode ? "linkCard_dm" : "linkCard"}  >
               <div className="container" style={{ backgroundColor: "" }} >
                 <h6 style={{ textAlign: "center", marginTop: "0.5rem" }} onClick={
@@ -943,16 +987,10 @@ const Profile = (props) => {
         <Container className="profileMain" fluid style={{ marginTop: '1rem', }} >
 
 
-          {/* {
-            !editing && typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}` ?
-               : ""
-          } */}
-
-
-          <Row id="linkRow" style={!editing && typeof window !== 'undefined' && (window.location.pathname == `/${searchedProfile.username}` || window.location.pathname == `/${searchedProfile.username}/links`) ?
+          <Row id="linkRow" style={!editing && (router.asPath == `/${searchedProfile.username}` || router.asPath == `/${searchedProfile.username}/links`) ?
             { alignItems: "center", justifyContent: "center", boxSizing: "border-box", marginBottom: "1rem", padding: "0" }
             : {
-              justifyContent: "center"
+              display: "none"
             }
           } >
             {
@@ -966,7 +1004,7 @@ const Profile = (props) => {
 
 
           {
-            editing && typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/edit` ?
+            editing && router.asPath == `/${searchedProfile.username}` ?
               <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
                   {(provided, snapshot) => (
@@ -1000,12 +1038,12 @@ const Profile = (props) => {
 
           {/* {
 
-            typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/about` && searchedProfile.about.length > 0 ?
+            typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}/about` && searchedProfile.about.length > 0 ?
              
               : ""
           } */}
 
-          <div className={darkMode ? "linkCard_dm" : "linkCard"} style={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/about` && searchedProfile.about.length > 0 ? { fontWeight: "600", whiteSpace: 'pre-wrap', wordBreak: "break-word", width: "100%", padding: "1rem", marginBottom: "2rem", backgroundColor: "" } : { display: "none" }}  >
+          <div className={darkMode ? "linkCard_dm" : "linkCard"} style={typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}/about` && searchedProfile.about.length > 0 ? { fontWeight: "600", whiteSpace: 'pre-wrap', wordBreak: "break-word", width: "100%", padding: "1rem", marginBottom: "2rem", backgroundColor: "" } : { display: "none" }}  >
             <p style={
               darkMode ?
                 { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "", padding: "0.15rem 0.5rem", borderRadius: "16px", display: "inline-block", border: "1px solid gray" } : { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "", padding: "0.15rem 0.5rem", borderRadius: "16px", display: "inline-block", border: "1px solid gray" }
@@ -1022,7 +1060,7 @@ const Profile = (props) => {
 
           {
 
-            typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/edit/about` ?
+            typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}?tab=about` ?
               <>
                 <div className={darkMode ? "linkCard_dm" : "linkCard"} style={{ fontWeight: "600", whiteSpace: 'pre-wrap', wordBreak: "break-word", width: "100%", padding: "1rem", marginBottom: "2rem" }}  >
                   <input value={tempprofession} onChange={(e) => { settempprofession(e.target.value) }} style={darkMode ?
@@ -1046,17 +1084,13 @@ const Profile = (props) => {
 
 
 
-          <div className={darkMode ? "linkCard_dm" : "linkCard"} style={typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/ratings` ? { margin: "0.5rem", padding: "0.5rem", cursor: "pointer", opacity: '1' } : { display: "none" }}   >
-
-
-
-
+          <div className={darkMode ? "linkCard_dm" : "linkCard"} style={router.asPath == `/${searchedProfile.username}?tab=ratings` ? { margin: "0.5rem", padding: "0.5rem", cursor: "pointer", opacity: '1' } : { display: "none" }}   >
             <Ratings darkMode={darkMode} searchedProfile={searchedProfile} profileImg={profileImg} _id={_id} />
           </div>
 
 
           {
-            typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/edit/appearance` ?
+            typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}?tab=appearance` ?
               <>
                 <h5>Background</h5>
                 <FcCancel onClick={() => {
@@ -1145,7 +1179,7 @@ const Profile = (props) => {
 
           {
 
-            typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/settings` && searchedProfile._id == _id ?
+            typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}?tab=settings` && searchedProfile._id == _id ?
               <div className={darkMode ? "linkCard_dm" : "linkCard"} style={{ fontWeight: "600", whiteSpace: 'pre-wrap', wordBreak: "break-word", width: "100%", padding: "1rem", marginBottom: "2rem", backgroundColor: "" }}  >
 
                 <Link href='/terms-of-service' style={{ color: darkMode ? "white" : "black", marginBottom: "0.5rem", cursor: "pointer", display: 'block', textDecoration: "none" }} >Terms of Service</Link>
@@ -1178,29 +1212,16 @@ const Profile = (props) => {
 
       </div >
 
-      {/* {
-        showProfile ?
-          <>
-
-
-          </>
-          :
-          <>
-            {
-              !searchedProfile ?
-                <div style={{ width: "100%", padding: 0, display: "flex", justifyContent: "center", height: "90vh", alignItems: "center" }} >
-                  <Spinner animation="border" color='orange' style={{ color: "orange" }} />
-                </div> : ""
-            }
-          </>
-      } */}
 
 
 
-      {
-        searchedProfile && typeof window !== 'undefined' && window.location.pathname == `/${searchedProfile.username}/analytics` && !showProfile ?
-          <Analytics /> : ""
-      }
+      <div id="element" >
+
+        {
+          searchedProfile && typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}?tab=analytics` && !showProfile ?
+            <Analytics /> : ""
+        }
+      </div>
 
       {
         share ?

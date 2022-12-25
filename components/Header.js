@@ -4,47 +4,48 @@ import { FaBars, FaMoon, FaStar, FaSun, FaUserCircle } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 import styles from '../styles/Home.module.css'
-import { useSelector, useDispatch } from "react-redux"
 import Router, { useRouter } from "next/router";
 import { host } from '../host';
-import { SET_DISPLAY_MODE } from '../actionType';
 import Link from 'next/link';
+import { useAppContext, useFeedContext } from '../context';
+import { MdAddCircleOutline } from 'react-icons/md';
+import { Modal } from 'react-bootstrap';
+import Post from './Post';
 
 
 const Header = () => {
 
 
-    const { username, name, _id, profileImg, about, guest, links } = useSelector(state => state.auth)
+    const context = useAppContext()
+    const context_feed = useFeedContext()
+    const [addItem, setaddItem] = useState(false)
+
+    const { username, name, _id, profileImg, about, guest, links } = context.sharedState
+    const { displayDarkMode, feed_Data } = context_feed.feedstate
     const router = useRouter()
     const { input } = router.query
-    const dispatch = useDispatch()
-    const { feed_Data, displayDarkMode } = useSelector(state => state.feed)
 
     const [_input, set_input] = useState('')
     const [people, setpeople] = useState([])
 
     const [darkMode, setdarkMode] = useState(false)
+    // useEffect(() => {
+    //     console.log("input", input)
+
+    //     if (window.location.pathname == `/search/${input}`) {
+    //         searchUsers()
+    //     } else {
+    //         console.log("iuytrew", input)
+    //     }
+    // }, [input])
+
     useEffect(() => {
-        console.log("input", input)
-
-        if (window.location.pathname == `/search/${input}`) {
-            dispatch(searchUsers())
-        } else {
-            console.log("iuytrew", input)
-        }
-    }, [input])
-
-    useEffect(() => {
 
 
-        console.log(displayDarkMode, "ok", darkMode)
+        // console.log(displayDarkMode, "ok", darkMode)
         if (displayDarkMode !== darkMode) {
-            dispatch({
-                type: SET_DISPLAY_MODE,
-                payload: {
-                    displayDarkMode: darkMode
-                }
-            })
+
+            context_feed.setfeedstate({ ...context_feed.feedstate, displayDarkMode: darkMode })
         }
 
     }, [darkMode])
@@ -109,8 +110,8 @@ const Header = () => {
                     size={20}
                 // onClick={() => handleToggleSidebar()}
                 />
-                <img onClick={()=>{router.push("/")}} alt="img" className={styles.companyLogo} src="https://res.cloudinary.com/dmjoqk3ww/image/upload/v1668442060/emm8ons4w1bsfqzz0iwn.png" style={{ zIndex: 999 }} />
-                <span onClick={()=>{router.push("/")}} className={styles.companyName} style={darkMode ? { color: 'white', fontFamily: 'cursive', marginLeft: "1rem" } : { color: 'black', fontFamily: 'cursive', marginLeft: "1rem" }}  >
+                <img onClick={() => { router.push("/") }} alt="img" className={styles.companyLogo} src="https://res.cloudinary.com/dmjoqk3ww/image/upload/v1668442060/emm8ons4w1bsfqzz0iwn.png" style={{ zIndex: 999 }} />
+                <span onClick={() => { router.push("/") }} className={styles.companyName} style={darkMode ? { color: 'white', fontFamily: 'cursive', marginLeft: "1rem" } : { color: 'black', fontFamily: 'cursive', marginLeft: "1rem" }}  >
                     <b> <>
                         Ubout
                     </></b>
@@ -144,6 +145,26 @@ const Header = () => {
 
 
             <div className={styles.header__icons}>
+                <MdAddCircleOutline size={32}
+                    onClick={() => { setaddItem(true) }}
+                    style={{ marginRight: '1rem', color: darkMode ? "white" : "black" }} />
+
+                <Modal
+                    show={addItem}
+                    onHide={() => {
+                        setaddItem(false)
+                    }
+                    }
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                // style={{ padding: "0.5rem" }}
+
+                >
+                    <Post></Post>
+                </Modal>
+
+
                 <div className={styles.one_quarter} id="switch">
                     <input onChange={() => {
                         document.getElementsByTagName("body")[0].style.backgroundColor = "black"
@@ -151,12 +172,7 @@ const Header = () => {
                             console.log("workde ddd")
                             document.getElementsByTagName("body")[0].style.backgroundColor = "black"
                             localStorage.setItem("umode", "dark")
-                            // dispatch({
-                            //     type: SET_DISPLAY_MODE,
-                            //     payload: {
-                            //         displayDarkMode: true
-                            //     }
-                            // })
+
                             setdarkMode(true)
                         } else {
                             console.log("workde ")

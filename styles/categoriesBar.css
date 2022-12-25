@@ -3,15 +3,10 @@
     display: flex;
     padding-bottom: 0;
     font-size: 0.8rem;
-
     overflow-x: scroll;
     scroll-margin: 0;
-
-
-
+    align-items: center;
     scrollbar-width: none;
-
-
 }
 
 /* display &::-webkit-scrollbar {

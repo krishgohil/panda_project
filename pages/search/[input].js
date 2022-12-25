@@ -3,7 +3,6 @@ import { Col, Container, Navbar, Row, Spinner } from 'react-bootstrap'
 
 
 import { FaBars, FaMoon, FaStar, FaSun, FaUserCircle } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -12,23 +11,27 @@ import Router, { useRouter } from 'next/router';
 import Header from '../../components/Header';
 import Link from 'next/link';
 import styles from '../../styles/Home.module.css'
+import { useAppContext, useFeedContext } from '../../context';
 
-const Search = () => {
-    const { username, name, _id, profileImg, about, guest, links } = useSelector(state => state.auth)
-    const { displayDarkMode } = useSelector(state => state.feed)
+const Search = (props) => {
+    const context = useAppContext()
+    const context_feed = useFeedContext()
+  
+    const { username, name, _id, profileImg, about, guest, links } = context.sharedState
+    const { displayDarkMode, feed_Data } = context_feed.feedstate
     const router = useRouter()
     const { input } = router.query
 
-    const dispatch = useDispatch()
 
     const [_input, set_input] = useState('')
     const [people, setpeople] = useState([])
 
     const [darkMode, setdarkMode] = useState(false)
     useEffect(() => {
-        console.log(input)
+        console.log(props)
+        setsearchedResults(props.results)
 
-        dispatch(searchUsers())
+        // searchUsers()
     }, [input])
 
 
@@ -77,7 +80,7 @@ const Search = () => {
 
     return (
         <>
-            <Header></Header>
+            
             <Container fluid className={darkMode ? 'app__main_dm' : 'app__main'}>
 
                 <Row className={styles.cardMainRow} style={{ margin: '0', display: "flex" }}  >
@@ -171,3 +174,22 @@ const Search = () => {
 }
 
 export default Search
+
+
+
+export async function getServerSideProps(context) {
+
+    const response = await fetch(`${host}/api/searchUsers`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ input: context.params.input }),
+    });
+    const json = await response.json();
+    console.log(json)
+    return {
+      props: {results:json},
+    }
+  
+  }

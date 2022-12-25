@@ -1,83 +1,64 @@
 
 import "../styles/globals.css";
-import { wrapper, store } from "../store";
-import { Provider, useDispatch } from "react-redux";
 import 'bootstrap/dist/css/bootstrap.css'
-import { GET_USER_DETAILS } from "../actionType";
-import { host } from "../host";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import 'react-toastify/dist/ReactToastify.min.css';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "../styles/categoriesBar.css"
+import "../styles/comments.css"
+import '../styles/imageCropDialog.css'
+import "../styles/post.css"
+import 'swiper/css'
+import 'swiper/swiper.min.css'
+import 'swiper/css/pagination'
 import Header from "../components/Header";
 import CategoriesBar from "../components/CategoriesBar";
+import { AuthWrapper, FeedWrapper } from "../context";
+import Auth from '../components/Auth';
+import { useRouter } from "next/router";
+
 function MyApp({ Component, pageProps }) {
-  const dispatch = useDispatch()
+
+  const router = useRouter()
+
+  const [show, setshow] = useState(false)
+
   useEffect(() => {
-    const utoken = localStorage.getItem('utoken')
-    document.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-    });
-    if (utoken) {
-      dispatch(fetchUniqueUser(utoken))
+
+
+    console.log(router.query.profile)
+    if (router.query.profile === undefined || router.query.profile === "undefined") {
+      console.log("hereeeeeeeeeeeee")
+      setshow(true)
+    } else {
+      console.log("hereeeeeeeeeeeee")
+        setshow(false)
     }
+  }, [router.query.profile])
 
 
-  }, [])
-
-  const fetchUniqueUser = (utoken) => async dispatch => {
-    console.log("paradiese")
-    const response = await fetch(`${host}/api/fetchuniqueuser`, {
-      // const response = await fetch('https://keepitupp.herokuapp.com/api/auth/fetchuniqueser', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ utoken }),
-    });
-    const json = await response.json();
-    console.log(json.fetchuniqueser)
-
-
-    dispatch({
-      type: GET_USER_DETAILS,
-      payload: {
-        name: json.fetchuniqueser.name,
-        profileImg: json.fetchuniqueser.profileImg,
-        username: json.fetchuniqueser.username,
-        about: json.fetchuniqueser.about,
-        _id: json.fetchuniqueser._id,
-        ratings: json.fetchuniqueser.ratings,
-        accountType: json.fetchuniqueser.accountType,
-        notificationToken: json.fetchuniqueser.notificationToken,
-        notificationSettings: json.fetchuniqueser.notificationSettings,
-        notificationCount: json.fetchuniqueser.notificationCount,
-        links: json.fetchuniqueser.links,
-        totalRating: json.fetchuniqueser.totalRating,
-        avgRating: json.fetchuniqueser.avgRating,
-        profileVisits: json.fetchuniqueser.profileVisits,
-        uniqueProfileVisits: json.fetchuniqueser.uniqueProfileVisits,
-        referrers: json.fetchuniqueser.referrers,
-        totalLinkClicks: json.fetchuniqueser.totalLinkClicks,
-        darkModeProfile: json.fetchuniqueser.darkModeProfile
-
-      }
-    })
-
-  }
   return (
+    <GoogleOAuthProvider clientId="87939184502-dvrtpsvn23tj3comolg0hcm6r8trqqvd.apps.googleusercontent.com">
+      <AuthWrapper>
 
-    <>
-      <GoogleOAuthProvider clientId="87939184502-dvrtpsvn23tj3comolg0hcm6r8trqqvd.apps.googleusercontent.com">
-        <Provider store={store}>
-          <Header></Header>
-          <CategoriesBar />
+        <FeedWrapper>
+          <Auth></Auth>
+          {
+            show ?
+              <>
+                <Header></Header>
+                <CategoriesBar />
+              </>
 
+              : ""
+          }
           <Component {...pageProps} />
-        </Provider>
-      </GoogleOAuthProvider>
-    </>
-  );
+        </FeedWrapper>
+      </AuthWrapper>
+    </GoogleOAuthProvider>
+
+
+  )
 }
 
-export default wrapper.withRedux(MyApp);
+export default MyApp

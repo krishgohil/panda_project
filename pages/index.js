@@ -7,20 +7,21 @@ import styles from '../styles/Home.module.css'
 import { FaStar } from 'react-icons/fa';
 import Header from '../components/Header'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { FEED_DATA_STORE } from '../actionType'
 import { host } from '../host'
 import Router from 'next/router'
 import Link from 'next/link'
 import CategoriesBar from '../components/CategoriesBar'
+import { useAppContext, useFeedContext } from '../context'
 
 export default function Home(props) {
 
   const [people, setpeople] = useState([])
-  const dispatch = useDispatch()
   // const navigate = useNavigate()
-  const { username, name, _id, profileImg, about, guest, links } = useSelector(state => state.auth)
-  const { displayDarkMode, feed_Data } = useSelector(state => state.feed)
+  const context = useAppContext()
+  const context_feed = useFeedContext()
+
+  const { username, name, _id, profileImg, about, guest, links } = context.sharedState
+  const { displayDarkMode, feed_Data } = context_feed.feedstate
   const [cnt, setcnt] = useState(0)
 
   const [input, setinput] = useState('')
@@ -30,20 +31,18 @@ export default function Home(props) {
   const [tempArr, settempArr] = useState(props.users)
   useEffect(() => {
 
+    
 
-    console.log(process.env.VERCEL_URL, "URL")
+    // console.log(context)
+    // console.log(context_feed)
 
-
-  }, [])
+  }, [context, context_feed])
 
   useEffect(() => {
+    // console.log(props.users)
 
-    dispatch({
-      type: FEED_DATA_STORE,
-      payload: {
-        feed_Data: props.users
-      }
-    })
+    // context_feed.setfeedstate(obj)
+    context_feed.setfeedstate({ ...context_feed.feedstate, feed_Data: props.users })
   }, [])
 
   useEffect(() => {
@@ -66,10 +65,9 @@ export default function Home(props) {
 
 
 
-  const fetchpeople = () => async dispatch => {
-    console.log("fkksdllsdkflsf", feed_Data.length)
+  async function fetchpeople() {
+    // console.log("fkksdllsdkflsf", feed_Data.length)
     const response = await fetch(`${host}/api/fetchpeople`, {
-      // const response = await fetch('https://keepitupp.herokuapp.com/api/auth/fetchuniqueser', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -77,18 +75,16 @@ export default function Home(props) {
       body: JSON.stringify({ skip: feed_Data.length }),
     });
     const json = await response.json();
-    console.log(json.users)
+    // console.log(json.users)
     if (json.users.length == 0) {
       setnomore(true)
     }
     setpeople(json.users)
 
-    dispatch({
-      type: FEED_DATA_STORE,
-      payload: {
-        feed_Data: json.users
-      }
-    })
+    
+
+    context_feed.setfeedstate({ ...context_feed.feedstate, feed_Data: context_feed.feedstate.feed_Data.concat(json.users) })
+
 
 
   }
@@ -107,42 +103,9 @@ export default function Home(props) {
   }
 
   const fetchNew = () => {
-    dispatch(fetchpeople())
+    fetchpeople()
   }
 
-  async function getCountries() {
-
-    const response = await fetch(`https://restcountries.com/v3.1/all`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const json = await response.json();
-    // console.log(json)
-
-    for (let i = 0; i < json.length; i++) {
-
-      console.log(json[i].name.common)
-      console.log(json[i].name.official)
-      console.log(json[i].flags.svg)
-      console.log(json[i].population)
-      console.log("")
-
-
-      let sortit = json.sort(function (a, b) {
-        return (a.population < b.population) ? 1 : ((a.population > b.population) ? -1 : 0);
-      });
-
-      console.log(sortit)
-
-    }
-  }
-
-  useEffect(() => {
-
-    // getCountries()
-  }, [])
 
 
 
@@ -154,7 +117,14 @@ export default function Home(props) {
     <>
 
       {/* <Header /> */}
-
+      <Head>
+        <title> Explore Profiles / Ubout </title>
+        {/* <meta name="description" content={`About: ${searchedProfile.about}`} />
+        <meta
+          name="keywords"
+          content={`${searchedProfile.name},${searchedProfile.username}`}
+        /> */}
+      </Head>
       <Container onClick={() => {
         console.log(feed_Data)
       }} fluid className={darkMode ? styles.app__main_dm : styles.app__main}>

@@ -1,201 +1,115 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Modal, Row } from 'react-bootstrap'
 import styles from '../../styles/Home.module.css'
 import { useSelector } from 'react-redux'
 import { FaStar } from 'react-icons/fa'
+import { useAppContext, useFeedContext } from '../../context'
+import Post from '../../components/Post'
+import { host } from '../../host'
 
-const index = () => {
-  const { displayDarkMode } = useSelector(state => state.feed)
-
-  const [darkMode, setdarkMode] = useState(false)
-
+const Shows = () => {
   const router = useRouter()
+  const { country } = router.query
+  const context = useAppContext()
+  const context_feed = useFeedContext()
+  const [addItem, setaddItem] = useState(false)
+
+  const { _id, username, profileImg } = context.sharedState
+  const { displayDarkMode } = context_feed.feedstate
+  const [darkMode, setdarkMode] = useState(false)
+  const [shows, setshows] = useState([])
   useEffect(() => {
-      setdarkMode(displayDarkMode)
+    setdarkMode(displayDarkMode)
+    fetchShows()
   }, [displayDarkMode])
- 
+
+
+  async function fetchShows() {
+
+    const response = await fetch(`${host}/api/post/fetchshows`, {
+      // const response = await fetch('https://keepitupp.herokuapp.com/api/auth/fetchuniqueser', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ skip: 0 }),
+    });
+    const json = await response.json();
+    console.log(json)
+    console.log("json")
+    setshows(json.shows)
+  }
   return (
-    
+
     <>
+      <Modal
+        show={addItem}
+        onHide={() => {
+          setaddItem(false)
+        }
+        }
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      // style={{ padding: "0.5rem" }}
+
+      >
+        <Post></Post>
+      </Modal>
       <Row className={styles.cardMainRow} style={{ margin: '0', display: "flex" }}  >
 
+        {
+          shows.map((show) => {
+            return (
+              <>
+                <Col
 
-        
-         
-              <Col
-               
-                className={styles.row}
-                lg={4} md={4} xs={6}style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
-                <Link scroll={false} href={`/`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
-                  <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
-                    <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(214,214,214)" }} >
-                      <img className={styles.img} src="/icon-512x512.png" alt="" />
-                    </div>
-
-
-                    <div style={{ padding: "0.5rem" }} >
-
-                      <div style={{ display: "flex" }} >
-                        <p style={{ textAlign: "center", width: "100%", fontSize: "14px", marginBottom: "0.5rem" }} ><b>Kantara</b></p>
-                        {/* <h6>Entrepreneur</h6> */}
-                      </div>
-                      {/* <p className={styles.ppp} style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", whiteSpace: 'pre-wrap', wordBreak: "break-word" }} >
-                        {peep.about}
-                      </p> */}
-
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <p className={styles.card_p} style={
-                          darkMode ?
-                            { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "#212121", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" } : { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "rgb(225, 225, 225)", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" }
-                        } >
-                          Comedy
-                        </p>
-                        <p style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", display: "flex", alignItems: "center", fontWeight: "600", marginLeft: "4px" }} >
-                         5
-                          <FaStar color='orange' ></FaStar>
-
-                        </p>
-
+                  className={styles.row}
+                  lg={4} md={4} xs={6} style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
+                  <Link scroll={false} href={`/shows/${show._id}`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
+                    <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
+                      <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(214,214,214)" }} >
+                        <img className={styles.img} src={show.postimg[0]} alt="" />
                       </div>
 
-                    </div>
-                  </div>
-                </Link>
 
+                      <div style={{ padding: "0.5rem" }} >
 
+                        <div style={{ display: "flex" }} >
+                          <p style={{ textAlign: "center", width: "100%", fontSize: "14px", marginBottom: "0.5rem" }} ><b>{show.title}</b></p>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                          <p className={styles.card_p} style={
+                            darkMode ?
+                              { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "#212121", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" } : { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "rgb(225, 225, 225)", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" }
+                          } >
+                            Comedy
+                          </p>
+                          <p style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", display: "flex", alignItems: "center", fontWeight: "600", marginLeft: "4px" }} >
+                            5
+                            <FaStar color='orange' ></FaStar>
 
-              </Col>
-              <Col
-               
-                className={styles.row}
-                lg={4} md={4} xs={6}style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
-                <Link scroll={false} href={`/`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
-                  <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
-                    <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(214,214,214)" }} >
-                      <img className={styles.img} src="/icon-512x512.png" alt="" />
-                    </div>
+                          </p>
 
-
-                    <div style={{ padding: "0.5rem" }} >
-
-                      <div style={{ display: "flex" }} >
-                        <p style={{ textAlign: "center", width: "100%", fontSize: "14px", marginBottom: "0.5rem" }} ><b>Kantara</b></p>
-                        {/* <h6>Entrepreneur</h6> */}
-                      </div>
-                      {/* <p className={styles.ppp} style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", whiteSpace: 'pre-wrap', wordBreak: "break-word" }} >
-                        {peep.about}
-                      </p> */}
-
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <p className={styles.card_p} style={
-                          darkMode ?
-                            { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "#212121", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" } : { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "rgb(225, 225, 225)", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" }
-                        } >
-                          Comedy
-                        </p>
-                        <p style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", display: "flex", alignItems: "center", fontWeight: "600", marginLeft: "4px" }} >
-                         5
-                          <FaStar color='orange' ></FaStar>
-
-                        </p>
+                        </div>
 
                       </div>
-
                     </div>
-                  </div>
-                </Link>
+                  </Link>
 
 
 
-              </Col>
-              <Col
-               
-                className={styles.row}
-                lg={4} md={4} xs={6}style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
-                <Link scroll={false} href={`/`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
-                  <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
-                    <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(214,214,214)" }} >
-                      <img className={styles.img} src="/icon-512x512.png" alt="" />
-                    </div>
+                </Col>
 
-
-                    <div style={{ padding: "0.5rem" }} >
-
-                      <div style={{ display: "flex" }} >
-                        <p style={{ textAlign: "center", width: "100%", fontSize: "14px", marginBottom: "0.5rem" }} ><b>Kantara</b></p>
-                        {/* <h6>Entrepreneur</h6> */}
-                      </div>
-                      {/* <p className={styles.ppp} style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", whiteSpace: 'pre-wrap', wordBreak: "break-word" }} >
-                        {peep.about}
-                      </p> */}
-
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <p className={styles.card_p} style={
-                          darkMode ?
-                            { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "#212121", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" } : { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "rgb(225, 225, 225)", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" }
-                        } >
-                          Comedy
-                        </p>
-                        <p style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", display: "flex", alignItems: "center", fontWeight: "600", marginLeft: "4px" }} >
-                         5
-                          <FaStar color='orange' ></FaStar>
-
-                        </p>
-
-                      </div>
-
-                    </div>
-                  </div>
-                </Link>
+              </>
+            )
+          })
+        }
 
 
 
-              </Col>
-              <Col
-               
-                className={styles.row}
-                lg={4} md={4} xs={6}style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
-                <Link scroll={false} href={`/`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
-                  <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
-                    <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(214,214,214)" }} >
-                      <img className={styles.img} src="/icon-512x512.png" alt="" />
-                    </div>
-
-
-                    <div style={{ padding: "0.5rem" }} >
-
-                      <div style={{ display: "flex" }} >
-                        <p style={{ textAlign: "center", width: "100%", fontSize: "14px", marginBottom: "0.5rem" }} ><b>Kantara</b></p>
-                        {/* <h6>Entrepreneur</h6> */}
-                      </div>
-                      {/* <p className={styles.ppp} style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", whiteSpace: 'pre-wrap', wordBreak: "break-word" }} >
-                        {peep.about}
-                      </p> */}
-
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <p className={styles.card_p} style={
-                          darkMode ?
-                            { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "#212121", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" } : { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "rgb(225, 225, 225)", padding: "0.15rem 0.5rem", borderRadius: "16px", whiteSpace: 'pre-wrap', wordBreak: "break-word" }
-                        } >
-                          Comedy
-                        </p>
-                        <p style={{ fontSize: "13px", fontFamily: "sans-serif", marginBottom: "0.5rem", display: "flex", alignItems: "center", fontWeight: "600", marginLeft: "4px" }} >
-                         5
-                          <FaStar color='orange' ></FaStar>
-
-                        </p>
-
-                      </div>
-
-                    </div>
-                  </div>
-                </Link>
-
-
-
-              </Col>
 
 
 
@@ -207,4 +121,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Shows

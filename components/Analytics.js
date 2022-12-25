@@ -4,9 +4,11 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { AiOutlineStock } from 'react-icons/ai'
 import { MdAdsClick, MdArrowBack, MdOutlineRemoveRedEye } from 'react-icons/md'
 import { useSelector } from 'react-redux'
+import { useAppContext, useFeedContext } from '../context';
 
 const Analytics = ({ }) => {
-  const { profileVisits, uniqueProfileVisits, links, _id, referrers, totalLinkClicks, darkModeProfile } = useSelector(state => state.auth)
+  const context = useAppContext()
+  const { profileVisits, uniqueProfileVisits, links, _id, referrers, totalLinkClicks, darkModeProfile } = context.sharedState
   const [darkMode, setdarkMode] = useState(false)
 
 

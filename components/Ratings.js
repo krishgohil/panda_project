@@ -20,7 +20,6 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
   const [result, setresult] = useState([]);
   const [average, setaverage] = useState(0)
 
-  const dispatch = useDispatch()
 
   useEffect(() => {
     console.log(searchedProfile)
@@ -41,11 +40,11 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
 
     // }
     // setshow(true)
-    dispatch(socialscorerdetails())
+    socialscorerdetails()
   }, [searchedProfile])
 
 
-  const socialscorerdetails = () => async dispatch => {
+  async function socialscorerdetails() {
     console.log('inside social rating 2')
     const response = await fetch(`${host}/api/ratings/socialscorerdetails`, {
       method: 'PUT',
@@ -157,7 +156,7 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
 
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       <div
       // style={!darkMode ? { backgroundColor: 'whitesmoke' } : { backgroundColor: 'rgb(14, 15, 16)' }}
       >
@@ -286,7 +285,6 @@ export default Ratings
 
 const RatingItem = ({ profileImg, item, _id, searchedProfile, darkMode, prevRating }) => {
 
-  const dispatch = useDispatch()
   const [options, setoptions] = useState(false)
   const [tempHidden, settempHidden] = useState(false)
 
@@ -310,16 +308,16 @@ const RatingItem = ({ profileImg, item, _id, searchedProfile, darkMode, prevRati
     setoptions(false)
     console.log(item)
 
-    dispatch(hideScore())
+    ideScore()
   }
 
   const showScoreFunc = (e) => {
     settempHidden(false)
     setoptions(false)
-    dispatch(showScore())
+      (showScore())
   }
 
-  const hideScore = () => async dispatch => {
+  async function hideScore() {
     console.log('post chala')
     const response = await fetch(`${host}/api/ratings/hideScore`, {
       method: 'PUT',
@@ -335,7 +333,7 @@ const RatingItem = ({ profileImg, item, _id, searchedProfile, darkMode, prevRati
     }
   }
 
-  const showScore = (score) => async dispatch => {
+  async function showScore(score) {
     console.log(score)
     console.log('post chala')
     const response = await fetch(`${host}/api/ratings/showScore`, {
@@ -358,10 +356,11 @@ const RatingItem = ({ profileImg, item, _id, searchedProfile, darkMode, prevRati
       let score = prevRating
       console.log(score)
 
-      dispatch(delscore(score))
+        (delscore(score))
     }
   }
-  const delscore = (score) => async dispatch => {
+  
+  async function delscore(score) {
     console.log(score)
     console.log('post chala')
     const response = await fetch(`${host}/api/ratings/delScore`, {

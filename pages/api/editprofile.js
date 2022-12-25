@@ -4,7 +4,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 const connectToMongo = require('../../db')
 const User = require('../../models/User')
-import multiparty from "multiparty";    
+import multiparty from "multiparty";
 // var cloudinary = require('cloudinary').v2;
 
 import cloudinary from "cloudinary"
@@ -15,7 +15,7 @@ cloudinary.config({
     api_secret: 'VesP1pNT2PREeZHSBk82IYsPINo'
 });
 
-export default async function fetchpeople(req, res) {
+export default async function editprofile(req, res) {
     await connectToMongo();
     // const { name, username, about, _id, profileImg, linkCount, darkMode, profBg, profession } = req.body
     const form = new multiparty.Form();
@@ -100,7 +100,17 @@ export default async function fetchpeople(req, res) {
         )
 
         console.log(update)
-        res.json(update)
+        let obj = update
+        obj.name = data.fields.name[0],
+            obj.username = data.fields.username[0],
+            obj.about = data.fields.about[0],
+            obj.profileImg = _prof,
+            obj.links = arr,
+            obj.darkModeProfile = data.fields.darkMode[0],
+            obj.backgroundImage = data.fields.profBg[0],
+            obj.profession = data.fields.profession[0],
+
+            res.json(obj)
     } catch (error) {
         console.error(error)
     }
