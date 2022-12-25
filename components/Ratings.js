@@ -3,7 +3,6 @@ import { Form, Modal, ToastContainer } from 'react-bootstrap';
 import { BsThreeDots, BsThreeDotsVertical } from 'react-icons/bs';
 import { FaRegEye, FaRegEyeSlash, FaRegStar, FaSearchLocation, FaStar } from 'react-icons/fa'
 import { FcCancel } from "react-icons/fc";
-import { useDispatch } from 'react-redux';
 import { host } from '../host';
 import { MdDelete } from 'react-icons/md';
 import { FaUserCircle } from 'react-icons/fa'
@@ -128,15 +127,15 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
     if (hasRated && prevRating > 0) {
       scoreDifference = starRating - prevRating
       // console.log(notificationSettings, "ajajajaj", notificationToken)
-      dispatch(postsocialscore(scoreDifference))
+      postsocialscore(scoreDifference)
     } else {
       scoreDifference = starRating
-      dispatch(postsocialscore(scoreDifference))
+     postsocialscore(scoreDifference)
     }
   }
 
 
-  const postsocialscore = (scoreDifference) => async dispatch => {
+  async function postsocialscore(scoreDifference) {
     console.log('users chala')
     const response = await fetch(`${host}/api/ratings/postsocialscore`, {
       method: 'PUT',
@@ -151,7 +150,7 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
     });
     const json = await response.json();
     console.log(json)
-    dispatch(socialscorerdetails())
+    socialscorerdetails()
   }
 
   return (
@@ -359,7 +358,7 @@ const RatingItem = ({ profileImg, item, _id, searchedProfile, darkMode, prevRati
         (delscore(score))
     }
   }
-  
+
   async function delscore(score) {
     console.log(score)
     console.log('post chala')
