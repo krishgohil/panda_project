@@ -17,12 +17,20 @@ const CategoriesBar = ({ extra, sethomeScroll }) => {
 
     const { username, name, _id, profileImg, about, guest, links } = context.sharedState
     const { displayDarkMode, feed_Data } = context_feed.feedstate
+    const router = useRouter()
 
     useEffect(() => {
         setdarkMode(displayDarkMode)
     }, [displayDarkMode])
+
+    useEffect(() => {
+
+
+        console.log(router.pathname)
+    }, [router])
+
     const keywords = [
-        'People',
+        'Home',
         'Countries',
         'Places',
         'Colleges',
@@ -33,18 +41,18 @@ const CategoriesBar = ({ extra, sethomeScroll }) => {
         'Sports',
         'Shows',
         'Stocks',
-        'Books',
         'Youtube',
     ]
 
     const [activeElement, setActiveElement] = useState('All')
-    const router = useRouter()
     const goto = (value) => {
-        if (value === "People") {
+        const link = value.toLowerCase()
+        context_feed.setfeedstate({ ...context_feed.feedstate, category: link })
+
+        if (value === "Home") {
             router.push(`/`)
 
         } else {
-            const link = value.toLowerCase()
             router.push(`/${link}`)
         }
     }
@@ -52,16 +60,18 @@ const CategoriesBar = ({ extra, sethomeScroll }) => {
 
     return (
         <>
-            <div className='categoriesBar' style={darkMode ? { backgroundColor: "black" } : { backgroundColor: 'white' }} id='content' >
-               
+            <div className='categoriesBar' style={darkMode ? { backgroundColor: "rgb(17, 15, 15)" } : { backgroundColor: 'white' }} id='content' >
+
                 {
                     keywords.map((value, i) => (
 
                         <div
                             // to={`/upp/${value}`.toLowerCase()}
                             // to={'/upp'value.toLowerCase()} 
+
+
                             onClick={() => goto(value)}
-                            style={darkMode ? { textDecoration: 'none', color: 'white', backgroundColor: "black" } : { textDecoration: 'none', color: 'black', backgroundColor: "whitesmoke" }} key={i} className={darkMode ? "too" : "too_dm"} >
+                            style={router.pathname == `/${value.toLowerCase()}` || (value == "Home" && router.pathname == "/") ? { border: "2px solid orange" } : {}} key={i} className={darkMode ? "too_dm" : "too"} >
                             {value}
                         </div>
                     ))

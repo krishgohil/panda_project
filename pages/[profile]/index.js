@@ -520,7 +520,7 @@ const Profile = (props) => {
                 document.getElementById("linkRow").style.display = 'none'
                 setcnt(cnt + 1)
               }}
-                style={darkMode ? { backgroundColor: "#1b1a1a" } : { backgroundColor: "whitesmoke" }}
+                style={router.asPath == `/${searchedProfile.username}?tab=settings` ? { backgroundColor: darkMode ? "#1b1a1a" : "whitesmoke", border: "1px solid orange" } : {}}
 
               >
                 <MdSettings size={24} />
@@ -1043,7 +1043,7 @@ const Profile = (props) => {
               : ""
           } */}
 
-          <div className={darkMode ? "linkCard_dm" : "linkCard"} style={typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}/about` && searchedProfile.about.length > 0 ? { fontWeight: "600", whiteSpace: 'pre-wrap', wordBreak: "break-word", width: "100%", padding: "1rem", marginBottom: "2rem", backgroundColor: "" } : { display: "none" }}  >
+          <div className={darkMode ? "linkCard_dm" : "linkCard"} style={!editing && router.asPath == `/${searchedProfile.username}?tab=about` && searchedProfile.about.length > 0 ? { fontWeight: "600", whiteSpace: 'pre-wrap', wordBreak: "break-word", width: "100%", padding: "1rem", marginBottom: "2rem", backgroundColor: "" } : { display: "none" }}  >
             <p style={
               darkMode ?
                 { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "", padding: "0.15rem 0.5rem", borderRadius: "16px", display: "inline-block", border: "1px solid gray" } : { fontSize: "12px", fontFamily: "sans-serif", marginBottom: "0.5rem", backgroundColor: "", padding: "0.15rem 0.5rem", borderRadius: "16px", display: "inline-block", border: "1px solid gray" }
@@ -1060,7 +1060,7 @@ const Profile = (props) => {
 
           {
 
-            typeof window !== 'undefined' && router.asPath == `/${searchedProfile.username}?tab=about` ?
+            editing && router.asPath == `/${searchedProfile.username}?tab=about` ?
               <>
                 <div className={darkMode ? "linkCard_dm" : "linkCard"} style={{ fontWeight: "600", whiteSpace: 'pre-wrap', wordBreak: "break-word", width: "100%", padding: "1rem", marginBottom: "2rem" }}  >
                   <input value={tempprofession} onChange={(e) => { settempprofession(e.target.value) }} style={darkMode ?

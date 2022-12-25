@@ -1,33 +1,44 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { useAppContext, useFeedContext } from '../../context'
+import { useAppContext, useFeedContext } from '../context'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper'
 import { BsReply } from 'react-icons/bs';
 import { AiOutlineClose } from 'react-icons/ai';
-import Stars from '../../components/Stars';
+import Stars from './Stars';
 import { Form } from 'react-bootstrap';
 import { MdLocationOn } from 'react-icons/md';
 import Link from 'next/link';
+import { host } from '../host';
+const SinglePost = ({ title, postimg, description }) => {
 
-const Place = () => {
-    const router = useRouter()
-    const { place } = router.query
     const context = useAppContext()
     const context_feed = useFeedContext()
-
+    const router = useRouter()
     const { _id, username, profileImg } = context.sharedState
     const { displayDarkMode } = context_feed.feedstate
     const [darkMode, setdarkMode] = useState(false)
     useEffect(() => {
-        setdarkMode(displayDarkMode)
+      setdarkMode(displayDarkMode)
     }, [displayDarkMode])
+
+    
 
     return (
         <>
+
             <dialog open style={{ position: 'absolute', border: 'none', color: 'white', zIndex: 999, left: '0%', backgroundColor: "rgba(0,0,0,.85)", height: '100vh', width: '100vw', position: 'fixed', display: 'flex', overflow: 'hidden', justifyContent: 'center', top: '0vh', alignItems: 'center', padding: 0 }}>
 
+
+                <Head>
+                    <title>Reviews on {title}</title>
+                    <meta name="description" content={`Reviews on ${title}`} />
+                    <meta
+                        name="keywords"
+                        content={`title`}
+                    />
+                </Head>
                 <div className='uniqDiv'  >
 
 
@@ -38,46 +49,18 @@ const Place = () => {
 
 
                             <div style={{ color: "white", fontWeight: "600", fontSize: "1rem", textAlign: "center" }}>
-                                {place}
+                                {title}
                             </div>
                             <div style={{ color: "white", fontSize: "0.9rem" }}>
                                 {/* {parse(feed.description)} */}
 
-                                <Link href='' style={{ textDecoration: "none", color: 'white' }} >
-                                    <MdLocationOn></MdLocationOn>
-                                    Show on map
-                                </Link>
+                                {description}
+
+
                             </div>
 
                             <div style={{ width: '100%' }}>
-                                {/* {
-        feed && feed.postimg && feed.postimg.length > 0 ?
-          <Swiper
-            className='jkliop'
-            style={{ width: 'auto', height: "auto", backgroundColor: "#16181b", }}
-            modules={[Navigation, Pagination, Scrollbar, A11y]}
-            slidesPerView={1}
-            navigation
-            pagination={{ clickable: true }}
-            scrollbar={{ draggable: true }}
-          >
-            {
-
-
-              feed.postimg.map((img, i) =>
-                <div key={i}>
-                  <SwiperSlide style={{ width: '100%', borderRadius: "0.5rem", padding: "0.25rem", backgroundColor: "#16181b", }} >
-                    <img alt="img" style={{
-                      width: '100%',
-                    }} src={img} />
-                  </SwiperSlide>
-
-                </div>
-              )
-            }
-          </Swiper>
-          : ""
-      } */}
+                                
                                 <Swiper
                                     className='jkliop'
                                     style={{ width: 'auto', height: "auto", backgroundColor: "#16181b", }}
@@ -88,14 +71,22 @@ const Place = () => {
                                     scrollbar={{ draggable: true }}
                                 >
 
-                                    <div >
-                                        <SwiperSlide style={{ width: '100%', borderRadius: "0.5rem", padding: "0.25rem", backgroundColor: "#16181b", }} >
-                                            <img alt="img" style={{
-                                                width: '100%',
-                                            }} src='' />
-                                        </SwiperSlide>
+                                    {
+                                        postimg.map((img, i) => {
+                                            return (
 
-                                    </div>
+                                                <div key={i} >
+                                                    <SwiperSlide style={{ width: '100%', borderRadius: "0.5rem", padding: "0.25rem", backgroundColor: "#16181b", }} >
+                                                        <img alt="img" style={{
+                                                            width: '100%',
+                                                        }} src={img} />
+                                                    </SwiperSlide>
+
+                                                </div>
+
+                                            )
+                                        })
+                                    }
                                 </Swiper>
 
                             </div>
@@ -199,10 +190,18 @@ const Place = () => {
 
                     </div>
                 </div>
+
+
+
+
+
+
+
+
             </dialog>
 
         </>
     )
 }
 
-export default Place
+export default SinglePost

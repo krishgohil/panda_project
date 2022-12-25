@@ -511,6 +511,8 @@ const Signup = (props) => {
 
   return (
     <>
+     <dialog open style={{ position: 'absolute', border: 'none', color: 'white', zIndex: 999, left: '0%', backgroundColor: "rgba(0,0,0,.85)", height: '100vh', width: '100vw', position: 'fixed', display: 'flex', overflow: 'hidden', justifyContent: 'center', top: '0vh', alignItems: 'center',padding:0 }}>
+
       <ToastContainer />
 
       {
@@ -666,6 +668,7 @@ const Signup = (props) => {
       }
 
 
+</dialog>
 
     </>
   )

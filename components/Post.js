@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper'
 import { toast } from 'react-toastify'
 import { host } from '../host'
-import { useAppContext } from '../context';
+import { useAppContext, useFeedContext } from '../context';
 import { useRouter } from 'next/router';
 import { Form } from 'react-bootstrap';
 import ImageCropMain from './ImageCropMain';
@@ -16,10 +16,16 @@ import ImageCropMain from './ImageCropMain';
 
 
 
-const Post = ({ handlecancel }) => {
+const Post = ({ handlecancel, setaddItem }) => {
     const router = useRouter()
     const context = useAppContext()
     const { username, _id, profileImg } = context.sharedState
+    const context_feed = useFeedContext()
+    const { category } = context_feed.feedstate
+
+
+    
+    
     const [freeze, setfreeze] = useState(false)
     const [img, setimg] = useState({ profileImg: '' })
     const [hasChangedImage, sethasChangedImage] = useState(false)
@@ -64,47 +70,12 @@ const Post = ({ handlecancel }) => {
         console.log(postimg, "dhadkan", editingImg)
     }, [editingImg, draggable_id])
 
-    const category = "home"
 
     const editProduct = {
         status: false
     }
     useEffect(() => {
-
-        console.log(category)
-        if (category !== 'home') {
-            // console.log("1")
-            if (category == 'product') {
-                // console.log("2")
-
-                if (repost && repost.status == true) {
-                    setcredentials({ ...credentials, category: 'personal' })
-                } else {
-                    setcredentials({ ...credentials, category: 'product' })
-
-                }
-
-
-            } else {
-                // console.log("3")
-                setcredentials({ ...credentials, category: category })
-
-            }
-        }
-        else if (category == "home" && editProduct.status == true) {
-            console.log("4")
-
-            if (editProduct.productId && editProduct.productId.length == 24) {
-                dispatch(fetchUniqPost(editProduct.productId))
-
-            }        // alert()
-            setcredentials({ ...credentials, category: 'product' })
-
-        }
-
-        else {
-            setcredentials({ ...credentials, category: 'personal' })
-        }
+        setcredentials({ ...credentials, category: category })
     }, []);
 
 
@@ -385,13 +356,6 @@ const Post = ({ handlecancel }) => {
         formData.append(`category`, credentials.category)
         formData.append(`_id`, _id)
 
-        setTimeout(() => {
-            setfreeze(false)
-
-        }, 2000);
-
-
-
 
 
         for (let i = 0; i < postimg.length; i++) {
@@ -432,56 +396,34 @@ const Post = ({ handlecancel }) => {
         const json = await response.json();
         console.log(json)
 
+        if (json._id) {
+            toast.success('Added Item to Review', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
 
+            setTimeout(() => {
+                router.push(`/${json.category}/${json._id}`)
+            }, 1000);
+        } else {
+            toast.error('Oops Something went wrong', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
+            setfreeze(false)
 
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // if (showPoll == false) {
-        //     console.log(showPoll, 'new_post')
-
-        //     new_post()
-        // } else if (showPoll == true) {
-        //     console.log(showPoll, 'showoll')
-
-        //     dispatch(newpoll())
-        // }
-        // console.log(postimg, 'postimg')
-        // console.log(credentials.description, 'credentials.description')
-        // console.log(credentials.title, 'credentials.title')
-
-
-        // newpostwithimg()
-
-        // console.log(credentials.description)
-        // console.log(credentials.postimg)
-        // console.log('e kunal')
-        // console.log(optionOne, '1')
-        // console.log(optionTwo, '2')
-        // console.log(optionThree, '3')
-        // console.log(optionFour, '4')
-        // if (postimg.length < 1 && showPoll == false) {
-        //     dispatch(newpost())
-        // }
-        // else if (postimg.length > 0 && showPoll == false) {
-        //     newpostwithimg()
-        // }
-        // else if (showPoll == true) {
-        //     console.log('bddcdz')
-        //     dispatch(newpoll())
-
-        // }
 
     }
 
@@ -1162,6 +1104,7 @@ const Post = ({ handlecancel }) => {
                             <option value="restaurants">restaurants</option>
                             <option value="sports">sports</option>
                             <option value="companies">companies</option>
+                            <option value="places">places</option>
                             {/* {
                                             repost.status == false ?
                                                 <option value="product">product 🚀</option>
@@ -1175,7 +1118,7 @@ const Post = ({ handlecancel }) => {
                         </select>
                     </div>
                     <div className='cancel'  >
-                        <AiOutlineClose size={28} onClick={() => router.back()} style={{ marginBottom: '0.4rem' }} className='cancelIcon' />
+                        <AiOutlineClose size={28} onClick={() => setaddItem(false)} style={{ marginBottom: '0.4rem' }} className='cancelIcon' />
                     </div>
                 </div>
 
@@ -1273,6 +1216,11 @@ const Post = ({ handlecancel }) => {
 
                 <div className='postIcons_Btn'  >
                     <div className='uploadicons'>
+                        {
+                            postimg.length > 0 ?
+                                <MdPermMedia onClick={handleImgClick} style={{ color: '#dedede', }} />
+                                : ""
+                        }
                     </div>
                     <button
                         className={freeze ? 'postbtn postbtndisabled' : 'postbtn'}

@@ -29,15 +29,13 @@ const Header = () => {
     const [people, setpeople] = useState([])
 
     const [darkMode, setdarkMode] = useState(false)
-    // useEffect(() => {
-    //     console.log("input", input)
 
-    //     if (window.location.pathname == `/search/${input}`) {
-    //         searchUsers()
-    //     } else {
-    //         console.log("iuytrew", input)
-    //     }
-    // }, [input])
+    useEffect(() => {
+
+
+        setaddItem(false)
+    }, [router.asPath])
+
 
     useEffect(() => {
 
@@ -161,7 +159,7 @@ const Header = () => {
                 // style={{ padding: "0.5rem" }}
 
                 >
-                    <Post></Post>
+                    <Post setaddItem={setaddItem} ></Post>
                 </Modal>
 
 

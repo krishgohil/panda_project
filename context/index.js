@@ -60,7 +60,8 @@ export function FeedWrapper({ children }) {
     const [feedstate, setfeedstate] = useState(
         {
             feed_Data: [],
-            displayDarkMode: false
+            displayDarkMode: false,
+            category: ""
         }
     )
 

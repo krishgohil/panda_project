@@ -16,6 +16,7 @@ import CategoriesBar from "../components/CategoriesBar";
 import { AuthWrapper, FeedWrapper } from "../context";
 import Auth from '../components/Auth';
 import { useRouter } from "next/router";
+import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }) {
 
@@ -25,16 +26,14 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
 
-
-    console.log(router.query.profile)
-    if (router.query.profile === undefined || router.query.profile === "undefined") {
+    if (router.query.profile === undefined || router.query.profile === "undefined" ) {
       console.log("hereeeeeeeeeeeee")
       setshow(true)
     } else {
       console.log("hereeeeeeeeeeeee")
-        setshow(false)
+      setshow(false)
     }
-  }, [router.query.profile])
+  }, [router])
 
 
   return (
@@ -42,6 +41,7 @@ function MyApp({ Component, pageProps }) {
       <AuthWrapper>
 
         <FeedWrapper>
+          <ToastContainer />
           <Auth></Auth>
           {
             show ?
@@ -52,6 +52,7 @@ function MyApp({ Component, pageProps }) {
 
               : ""
           }
+
           <Component {...pageProps} />
         </FeedWrapper>
       </AuthWrapper>

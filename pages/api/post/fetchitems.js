@@ -6,14 +6,14 @@ const connectToMongo = require('../../../db')
 const AllContent = require('../../../models/AllContent')
 
 
-export default async function fetchshows(req, res) {
+export default async function fetchitems(req, res) {
     try {
 
         await connectToMongo();
-        const { skip } = req.body
+        const { skip,category } = req.body
         console.log("skip", skip)
-        const shows = await AllContent.find({category:"shows"}).sort({ date: -1 }).skip(skip).limit(10)
-        res.json({ shows })
+        const items = await AllContent.find({category:category}).sort({ date: -1 }).skip(skip).limit(20)
+        res.json({ items })
 
     } catch (error) {
         console.error(error)

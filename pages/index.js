@@ -118,7 +118,7 @@ export default function Home(props) {
 
       {/* <Header /> */}
       <Head>
-        <title> Explore Profiles / Ubout </title>
+        <title> Home / Ubout </title>
         {/* <meta name="description" content={`About: ${searchedProfile.about}`} />
         <meta
           name="keywords"
@@ -238,11 +238,11 @@ export default function Home(props) {
                     Router.push(`/${peep.username}`)
                   }}
                   className={styles.row}
-                  lg={4} md={4} xs={6} key={i} style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
+                  lg={3} md={4} xs={6} key={i} style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
                   <Link scroll={false} href={`/${peep.username}`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
                     <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
                       <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(214,214,214)" }} >
-                        <img className={styles.img} src={peep.profileImg} alt="" />
+                        <img className={styles.img} style={{margin:"4px 0"}} src={peep.profileImg} alt="" />
                       </div>
 
 
