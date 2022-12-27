@@ -40,7 +40,7 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
     // }
     // setshow(true)
     socialscorerdetails()
-  }, [searchedProfile])
+  }, [searchedProfile, _id])
 
 
   async function socialscorerdetails() {
@@ -130,7 +130,7 @@ const Ratings = ({ darkMode, profileImg, searchedProfile, _id, username }) => {
       postsocialscore(scoreDifference)
     } else {
       scoreDifference = starRating
-     postsocialscore(scoreDifference)
+      postsocialscore(scoreDifference)
     }
   }
 

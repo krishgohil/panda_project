@@ -15,7 +15,9 @@ const AllContentSchema = new Schema({
     description: { type: String },
     category: { type: String },
 
-    totalStarRating: { type: Number, default: 0 },
+    totalRating: { type: Number, default: 0 },
+    totalRatingsLength: { type: Number, default: 0 },
+
     avgStarRating: { type: Number, default: 0 },
     posted_Date: { type: Date, default: Date.now },
 
@@ -34,7 +36,7 @@ const AllContentSchema = new Schema({
     ratedBy: [
         {
             raterComment: { type: String, default: "" },
-            starRating: { type: Number },
+            rating: { type: Number },
             raterId: { type: String },
             rater: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
             ratedDate: { type: Date, default: Date.now },

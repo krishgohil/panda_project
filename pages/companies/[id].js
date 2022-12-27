@@ -20,7 +20,7 @@ const ReviewPost = (props) => {
 
   return (
     <>
-      <SinglePost title={title} description={description} postimg={postimg} ></SinglePost>
+      <SinglePost title={title} description={description} postimg={postimg} props={props} ></SinglePost>
     </>
   )
 }

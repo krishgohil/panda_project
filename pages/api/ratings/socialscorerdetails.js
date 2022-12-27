@@ -12,7 +12,7 @@ export default async function socialscorerdetails(req, res) {
     console.log("aklsjdfklsjldf")
     try {
         let getScore = await User.findOne(
-            { _id: visitedProfId }, { ratings: 1 }
+            { _id: visitedProfId }, { ratings: 1, totalRating: 1, totalRatingsLength: 1 }
         )
             .populate("ratings.rater", "profileImg username")
 
