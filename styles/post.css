@@ -85,7 +85,7 @@ input::-webkit-inner-spin-button {
     display: flex;
     justify-content: space-between;
     position: sticky;
-    background-color: #16181b;
+    /* background-color: #16181b; */
     bottom: 0;
     z-index: 2;
 }
@@ -172,11 +172,16 @@ input::-webkit-inner-spin-button {
     justify-content: flex-end;
     color: white;
 }
+.cancel_dm {
+    display: flex;
+    justify-content: flex-end;
+    color: black;
+}
 
 .cancelIcon:hover {
     padding: 0.2rem;
     color: red;
-    background-color: rgb(68, 54, 54);
+    /* background-color: rgb(68, 54, 54); */
     border-radius: 50%;
 }
 

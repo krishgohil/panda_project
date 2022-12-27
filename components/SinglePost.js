@@ -188,7 +188,7 @@ const SinglePost = ({ title, postimg, description, props }) => {
                 <div className='uniqDiv'  >
 
 
-                    <div className='cmntPostInfo' style={{ borderRadius: "0.5rem 0 0 0.5rem", color: "white", backgroundColor: darkMode ? "black" : "white", color: darkMode ? "white" : "black" }} >
+                    <div className='cmntPostInfo' style={{ color: "white", backgroundColor: darkMode ? "black" : "white", color: darkMode ? "white" : "black" }} >
 
 
                         <div style={{ marginTop: "0.5rem", padding: "0.25rem" }}>

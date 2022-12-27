@@ -12,7 +12,7 @@ export default async function fetchpeople(req, res) {
         await connectToMongo();
         const { skip } = req.body
         console.log("skip", skip)
-        const users = await User.find().sort({ date: -1 }).skip(skip).limit(10)
+        const users = await User.find().sort({ date: -1 }).skip(skip).limit(12)
         res.json({ users })
 
     } catch (error) {

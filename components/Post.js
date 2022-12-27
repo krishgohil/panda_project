@@ -24,8 +24,8 @@ const Post = ({ handlecancel, setaddItem }) => {
     const { category } = context_feed.feedstate
 
 
-    
-    
+
+
     const [freeze, setfreeze] = useState(false)
     const [img, setimg] = useState({ profileImg: '' })
     const [hasChangedImage, sethasChangedImage] = useState(false)
@@ -65,6 +65,17 @@ const Post = ({ handlecancel, setaddItem }) => {
 
     const [draggable_id, setdraggable_id] = useState("")
 
+
+    const { displayDarkMode, feed_Data } = context_feed.feedstate
+    const [darkMode, setdarkMode] = useState(false)
+
+    useEffect(() => {
+        if (displayDarkMode !== darkMode) {
+
+            context_feed.setfeedstate({ ...context_feed.feedstate, displayDarkMode: darkMode })
+        }
+
+    }, [darkMode])
 
     useEffect(() => {
         console.log(postimg, "dhadkan", editingImg)
@@ -1085,9 +1096,9 @@ const Post = ({ handlecancel, setaddItem }) => {
 
 
 
-            <div className='postdiv'>
+            <div className='postdiv' style={{ backgroundColor: darkMode ? "#16181b" : "whitesmoke" }} >
 
-                <div className='postUser' >
+                <div className='postUser' style={{ backgroundColor: darkMode ? "#16181b" : "whitesmoke" }} >
                     <div style={{ display: 'flex', alignItems: 'center' }}>
 
                         {
@@ -1096,11 +1107,14 @@ const Post = ({ handlecancel, setaddItem }) => {
                                 : <FaUserCircle style={{ height: '2.5rem', width: '2.5rem', cursor: "pointer", marginLeft: '1rem', borderRadius: '50%' }} />
                         }
 
-                        <p style={{ marginBottom: 0, fontWeight: 'bold', fontSize: '0.9rem', cursor: 'pointer', color: 'white' }} >
+                        <p style={{
+                            marginBottom: 0, fontWeight: 'bold', fontSize: '0.9rem', cursor: 'pointer',
+                            color: darkMode ? "white" : "black"
+                        }} >
                             {username}</p>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", margin: "0.5rem" }} >
-                        <select value={credentials.category} name='category' onChange={onchangeFunc} id="" style={{ outline: "none", backgroundColor: "#19191a", color: "silver", margin: '0.5rem', padding: "0.5rem", border: '1px solid #363636', borderRadius: "1rem", fontSize: "14px" }} >
+                        <select value={credentials.category} name='category' onChange={onchangeFunc} id="" style={{ outline: "none", backgroundColor: darkMode ? "#19191a" : "white", margin: '0.5rem', padding: "0.5rem", border: '1px solid #363636', borderRadius: "1rem", fontSize: "14px" }} >
                             <option value="books">books</option>
                             <option value="cryptos">cryptos</option>
                             <option value="colleges">colleges</option>
@@ -1121,13 +1135,13 @@ const Post = ({ handlecancel, setaddItem }) => {
 
                         </select>
                     </div>
-                    <div className='cancel'  >
+                    <div className={darkMode ? "cancel" : "cancel_dm"}   >
                         <AiOutlineClose size={28} onClick={() => setaddItem(false)} style={{ marginBottom: '0.4rem' }} className='cancelIcon' />
                     </div>
                 </div>
 
                 <div className='postinfo'>
-                    <input value={credentials.title} name='title' required pattern="[a-zA-Z0-9 ]+" onChange={onchangeFunc} type="text" style={{ padding: "0.5rem", outline: "none", border: "1px solid #363636", backgroundColor: "#16181b", width: "100%", caretColor: 'white ', color: "white", fontWeight: "500", borderRadius: '0.5rem', margin: "0.5rem 0" }} maxLength='100' placeholder='Title' />
+                    <input value={credentials.title} name='title' required pattern="[a-zA-Z0-9 ]+" onChange={onchangeFunc} type="text" style={{ padding: "0.5rem", outline: "none", border: "1px solid #363636", backgroundColor: darkMode ? "#16181b" : "white", width: "100%", caretColor: darkMode ? 'white' : "black", color: darkMode ? "white" : "black", fontWeight: "500", borderRadius: '0.5rem', margin: "0.5rem 0" }} maxLength='100' placeholder='Title' />
 
                     {
                         postimg.length > 0 ?
@@ -1145,10 +1159,10 @@ const Post = ({ handlecancel, setaddItem }) => {
                                                                 <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
                                                                     <div ref={otherRef} onClick={delImg}>
                                                                         <div onClick={() => { removePhoto(i) }} style={{ margin: " 0 0rem", top: '12px', position: 'relative', cursor: "pointer" }} >
-                                                                            <AiOutlineClose color='white' size={20} />
+                                                                            <AiOutlineClose color={darkMode ? 'white' : "black"} size={20} />
                                                                         </div>
                                                                     </div>
-                                                                    <div className='previewimg'  > b
+                                                                    <div className='previewimg'  >
                                                                         <ImageCropMain img={rev} id={1} setImgFunc={setImgFunc} index={i} seteditingImg={seteditingImg} setdraggable_id={setdraggable_id} name={rev.name ? rev.name : draggable_id} />
                                                                     </div>
 
@@ -1174,12 +1188,14 @@ const Post = ({ handlecancel, setaddItem }) => {
                             </DragDropContext>
                             :
                             <div style={{ color: "gray", display: "flex" }} >
-                                <div style={{ border: "1px solid #363636", padding: "0.5rem", display: "flex", flexDirection: "column", alignItems: "center" }} >
-                                    <p>                                Add Images
+                                <div style={{ border: "1px solid #363636", padding: "0.5rem", display: "flex", flexDirection: "column", alignItems: "center" }} onClick={handleImgClick} >
+                                    <p>
+                                        Add Images
                                     </p>
                                     <div>
-                                        <MdPermMedia onClick={handleImgClick} size={50} style={{ color: '#dedede', }} />
-                                    </div>                                </div>
+                                        <MdPermMedia size={50} style={{ color: darkMode ? 'black' : 'black', }} />
+                                    </div>
+                                </div>
 
                             </div>
                     }
@@ -1190,7 +1206,7 @@ const Post = ({ handlecancel, setaddItem }) => {
                         // onChange={(e) => settempUserInfo({ ...tempUserInfo, about: e.target.value })}
                         as="textarea"
                         placeholder="description (optional)"
-                        style={{ resize: 'none', outline: 'none', padding: '0.5rem', backgroundColor: "#16181b", caretColor: "white ", color: "white", border: '1px solid #363636', borderRadius: "0.5rem", width: '100%', margin: '0.5rem 0' }}
+                        style={{ resize: 'none', outline: 'none', padding: '0.5rem', backgroundColor: darkMode ? "#16181b" : "white", caretColor: darkMode ? "white" : "black", color: darkMode ? "white" : "black", border: '1px solid #363636', borderRadius: "0.5rem", width: '100%', margin: '0.5rem 0' }}
                         rows={5}
 
                     // value={tempUserInfo.about}
@@ -1218,11 +1234,11 @@ const Post = ({ handlecancel, setaddItem }) => {
 
 
 
-                <div className='postIcons_Btn'  >
+                <div className='postIcons_Btn' style={{ backgroundColor: darkMode ? "#16181b" : "whitesmoke" }} >
                     <div className='uploadicons'>
                         {
                             postimg.length > 0 ?
-                                <MdPermMedia onClick={handleImgClick} style={{ color: '#dedede', }} />
+                                <MdPermMedia onClick={handleImgClick} style={{ color: darkMode ? 'black' : 'black', }} />
                                 : ""
                         }
                     </div>
@@ -1231,7 +1247,7 @@ const Post = ({ handlecancel, setaddItem }) => {
                         disabled={freeze ? true : false}
                         type="submit"
                         onClick={save}
-                    > {postimg.length == 0 && credentials.description !== '' && showPoll == false ? 'Kwik' : 'ADD TO REVIEW'} </button>
+                    >ADD TO REVIEW </button>
                 </div>
             </div>
 
