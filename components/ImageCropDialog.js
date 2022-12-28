@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "./cropImage";
 import { MdStayCurrentPortrait, MdOutlineStayCurrentLandscape, MdOutlineCropSquare } from 'react-icons/md';
+import { useFeedContext } from "../context";
 
 
 const aspectRatios = [
@@ -57,7 +58,7 @@ const ImageCropDialog = ({
   };
 
   const onCrop = async () => {
-    const croppedImageUrl = await getCroppedImg(imageUrl, croppedAreaPixels, 0, setImgFunc,index);
+    const croppedImageUrl = await getCroppedImg(imageUrl, croppedAreaPixels, 0, setImgFunc, index);
     console.log(croppedImageUrl)
     setCroppedImageFor(id, crop, zoom, aspect, croppedImageUrl);
   };
@@ -91,9 +92,21 @@ const ImageCropDialog = ({
     }
   }
 
+
+  const context_feed = useFeedContext()
+
+  const { displayDarkMode } = context_feed.feedstate
+  const [darkMode, setdarkMode] = useState(false)
+
+  useEffect(() => {
+    console.log(displayDarkMode)
+    setdarkMode(displayDarkMode)
+
+  }, [displayDarkMode])
+
   return (
     <div style={{ zIndex: 999 }}>
-      <div className="backdrop"></div>
+      <div className="backdrop" style={{ backgroundColor: darkMode ? "black" : "whitesmoke" }}  ></div>
       <div className="crop-container">
         <Cropper
           image={imageUrl}

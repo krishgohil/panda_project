@@ -94,7 +94,7 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .uniqDiv {
         flex-direction: column;
         overflow-y: scroll;

@@ -70,12 +70,10 @@ const Post = ({ handlecancel, setaddItem }) => {
     const [darkMode, setdarkMode] = useState(false)
 
     useEffect(() => {
-        if (displayDarkMode !== darkMode) {
+        console.log(displayDarkMode)
+        setdarkMode(displayDarkMode)
 
-            context_feed.setfeedstate({ ...context_feed.feedstate, displayDarkMode: darkMode })
-        }
-
-    }, [darkMode])
+    }, [displayDarkMode])
 
     useEffect(() => {
         console.log(postimg, "dhadkan", editingImg)
@@ -1099,7 +1097,7 @@ const Post = ({ handlecancel, setaddItem }) => {
             <div className='postdiv' style={{ backgroundColor: darkMode ? "#16181b" : "whitesmoke" }} >
 
                 <div className='postUser' style={{ backgroundColor: darkMode ? "#16181b" : "whitesmoke" }} >
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', color: darkMode ? "white" : "black" }}>
 
                         {
                             profileImg !== '' ?
@@ -1111,10 +1109,11 @@ const Post = ({ handlecancel, setaddItem }) => {
                             marginBottom: 0, fontWeight: 'bold', fontSize: '0.9rem', cursor: 'pointer',
                             color: darkMode ? "white" : "black"
                         }} >
-                            {username}</p>
+                            {username}
+                        </p>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", margin: "0.5rem" }} >
-                        <select value={credentials.category} name='category' onChange={onchangeFunc} id="" style={{ outline: "none", backgroundColor: darkMode ? "#19191a" : "white", margin: '0.5rem', padding: "0.5rem", border: '1px solid #363636', borderRadius: "1rem", fontSize: "14px" }} >
+                        <select value={credentials.category} name='category' onChange={onchangeFunc} id="" style={{ outline: "none", backgroundColor: darkMode ? "#19191a" : "white", margin: '0.5rem', padding: "0.5rem", border: '1px solid #363636', borderRadius: "1rem", fontSize: "14px", color: darkMode ? "white" : "black" }} >
                             <option value="books">books</option>
                             <option value="cryptos">cryptos</option>
                             <option value="colleges">colleges</option>
@@ -1141,7 +1140,7 @@ const Post = ({ handlecancel, setaddItem }) => {
                 </div>
 
                 <div className='postinfo'>
-                    <input value={credentials.title} name='title' required pattern="[a-zA-Z0-9 ]+" onChange={onchangeFunc} type="text" style={{ padding: "0.5rem", outline: "none", border: "1px solid #363636", backgroundColor: darkMode ? "#16181b" : "white", width: "100%", caretColor: darkMode ? 'white' : "black", color: darkMode ? "white" : "black", fontWeight: "500", borderRadius: '0.5rem', margin: "0.5rem 0" }} maxLength='100' placeholder='Title' />
+                    <input value={credentials.title} name='title' required pattern="[a-zA-Z0-9 ]+" onChange={onchangeFunc} type="text" style={{ padding: "0.5rem", outline: "none", border: "1px solid #363636", backgroundColor: darkMode ? "#202429" : "white", width: "100%", caretColor: darkMode ? 'white' : "black", color: darkMode ? "white" : "black", fontWeight: "500", borderRadius: '0.5rem', margin: "0.5rem 0" }} maxLength='100' placeholder='Title' />
 
                     {
                         postimg.length > 0 ?
@@ -1188,12 +1187,12 @@ const Post = ({ handlecancel, setaddItem }) => {
                             </DragDropContext>
                             :
                             <div style={{ color: "gray", display: "flex" }} >
-                                <div style={{ border: "1px solid #363636", padding: "0.5rem", display: "flex", flexDirection: "column", alignItems: "center" }} onClick={handleImgClick} >
+                                <div style={{ border: "1px solid #363636", padding: "0.5rem", display: "flex", flexDirection: "column", alignItems: "center",backgroundColor:darkMode?"#202429" :"white"}} onClick={handleImgClick} >
                                     <p>
                                         Add Images
                                     </p>
                                     <div>
-                                        <MdPermMedia size={50} style={{ color: darkMode ? 'black' : 'black', }} />
+                                        <MdPermMedia size={50} style={{ color: darkMode ? 'silver' : 'black', }} />
                                     </div>
                                 </div>
 
@@ -1206,7 +1205,7 @@ const Post = ({ handlecancel, setaddItem }) => {
                         // onChange={(e) => settempUserInfo({ ...tempUserInfo, about: e.target.value })}
                         as="textarea"
                         placeholder="description (optional)"
-                        style={{ resize: 'none', outline: 'none', padding: '0.5rem', backgroundColor: darkMode ? "#16181b" : "white", caretColor: darkMode ? "white" : "black", color: darkMode ? "white" : "black", border: '1px solid #363636', borderRadius: "0.5rem", width: '100%', margin: '0.5rem 0' }}
+                        style={{ resize: 'none', outline: 'none', padding: '0.5rem', backgroundColor: darkMode ? "#202429" : "white", caretColor: darkMode ? "white" : "black", color: darkMode ? "white" : "black", border: '1px solid #363636', borderRadius: "0.5rem", width: '100%', margin: '0.5rem 0' }}
                         rows={5}
 
                     // value={tempUserInfo.about}
@@ -1238,7 +1237,7 @@ const Post = ({ handlecancel, setaddItem }) => {
                     <div className='uploadicons'>
                         {
                             postimg.length > 0 ?
-                                <MdPermMedia onClick={handleImgClick} style={{ color: darkMode ? 'black' : 'black', }} />
+                                <MdPermMedia onClick={handleImgClick} style={{ color: darkMode ? 'silver' : 'black', }} />
                                 : ""
                         }
                     </div>

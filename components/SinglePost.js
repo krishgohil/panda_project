@@ -55,7 +55,7 @@ const SinglePost = ({ title, postimg, description, props }) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ postId: props._id, userId: _id }),
+            body: JSON.stringify({ postId: props._id }),
         });
         const json = await response.json();
         console.log(json)
@@ -63,22 +63,24 @@ const SinglePost = ({ title, postimg, description, props }) => {
         setshow(true)
         setresult(json.ratedBy)
 
-        var has_rated = false
-        var prev_rating = 0
-        for (let i = 0; i < json.ratedBy.length; i++) {
-            if (json.ratedBy[i].raterId == _id) {
-                has_rated = true
-                prev_rating = json.ratedBy[i].rating
+        if (_id) {
+            var has_rated = false
+            var prev_rating = 0
+            for (let i = 0; i < json.ratedBy.length; i++) {
+                if (json.ratedBy[i].raterId == _id) {
+                    has_rated = true
+                    prev_rating = json.ratedBy[i].rating
 
 
+                }
             }
-        }
-        if (has_rated == true) {
-            sethasRated(true)
-            setprevRating(prev_rating)
-            setstarRating(prev_rating)
-        }
+            if (has_rated == true) {
+                sethasRated(true)
+                setprevRating(prev_rating)
+                setstarRating(prev_rating)
+            }
 
+        }
 
         let avg = json.totalRating / json.totalRatingsLength
         console.log(avg, json.totalRating, json.totalRatingsLength)
@@ -438,26 +440,28 @@ const RatingItem = ({ profileImg, item, _id, props, prevRating, darkMode, fetchr
 
 
     useEffect(() => {
-        if (item.rater._id != _id) {
-            settempHidden(item.isHidden)
-        }
-
-        if (item.upvotedBy && item.upvotedBy.length > 0) {
-            for (let i = 0; i < item.upvotedBy.length; i++) {
-                if (item.upvotedBy[i].upvoterId == _id) {
-                    setupvoted(true)
-                }
+        if (_id) {
+            if (item.rater._id != _id) {
+                settempHidden(item.isHidden)
             }
-            setupvotes(item.upvotedBy.length)
-        }
 
-        if (item.downvotedBy && item.downvotedBy.length > 0) {
-            for (let i = 0; i < item.downvotedBy.length; i++) {
-                if (item.downvotedBy[i].downvoterId == _id) {
-                    setdownvoted(true)
+            if (item.upvotedBy && item.upvotedBy.length > 0) {
+                for (let i = 0; i < item.upvotedBy.length; i++) {
+                    if (item.upvotedBy[i].upvoterId == _id) {
+                        setupvoted(true)
+                    }
                 }
+                setupvotes(item.upvotedBy.length)
             }
-            setdownvotes(item.downvotedBy.length)
+
+            if (item.downvotedBy && item.downvotedBy.length > 0) {
+                for (let i = 0; i < item.downvotedBy.length; i++) {
+                    if (item.downvotedBy[i].downvoterId == _id) {
+                        setdownvoted(true)
+                    }
+                }
+                setdownvotes(item.downvotedBy.length)
+            }
         }
 
         if (item.replies) {
@@ -909,7 +913,7 @@ const RatingItem = ({ profileImg, item, _id, props, prevRating, darkMode, fetchr
 
                                         onChange={setReply} as="textarea"
                                         placeholder="Reply"
-                                        style={{ display: 'block', width: '100%', outline: 'none', border: 'none', borderBottom: '1px solid black', caretColor:  darkMode ?'white':"", color: 'white', marginTop: "1rem", padding: '0.25rem', resize: "none", backgroundColor: darkMode ? "rgb(17, 19, 26)" : "whitesmoke" }}
+                                        style={{ display: 'block', width: '100%', outline: 'none', border: 'none', borderBottom: '1px solid black', caretColor: darkMode ? 'white' : "", color: 'white', marginTop: "1rem", padding: '0.25rem', resize: "none", backgroundColor: darkMode ? "rgb(17, 19, 26)" : "whitesmoke" }}
                                         rows={3}
                                     />
 
