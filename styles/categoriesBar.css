@@ -1,12 +1,20 @@
 .categoriesBar {
-    padding: 0.25rem 0;
+    padding: 0.25rem 0.5rem;
     display: flex;
-    padding-bottom: 0;
     font-size: 0.8rem;
     overflow-x: scroll;
     scroll-margin: 0;
     align-items: center;
     scrollbar-width: none;
+    transition: 1s;
+    background-color: red;
+}
+
+
+.stickbar {
+    transition: 0.5s;
+    top: -56px;
+    z-index: 899;
 }
 
 /* display &::-webkit-scrollbar {
@@ -28,11 +36,12 @@
     border-radius: 1rem;
     text-align: center;
     text-decoration: none;
-    color:white;
+    color: white;
     background-color: rgb(23, 23, 23);
 
 
 }
+
 .too {
     margin-right: 0.75rem;
     margin-left: 0.25rem;
@@ -44,12 +53,12 @@
     border-radius: 1rem;
     text-align: center;
     text-decoration: none;
-    color:black;
+    color: black;
     background-color: whitesmoke;
 
 }
 
-.too:hover,.too_dm:hover {
+.too:hover, .too_dm:hover {
     border: 1.5px solid orange;
 }
 

@@ -17,24 +17,37 @@ import { AuthWrapper, FeedWrapper } from "../context";
 import Auth from '../components/Auth';
 import { useRouter } from "next/router";
 import { ToastContainer } from "react-toastify";
+import SearchResults from "../components/SearchResults";
 
 function MyApp({ Component, pageProps }) {
 
   const router = useRouter()
 
+
+
   const [show, setshow] = useState(false)
 
   useEffect(() => {
 
-    if (router.query.profile === undefined || router.query.profile === "undefined" ) {
-      console.log("hereeeeeeeeeeeee")
+    if (router.query.profile === undefined || router.query.profile === "undefined") {
+      // console.log("hereeeeeeeeeeeee")
       setshow(true)
     } else {
-      console.log("hereeeeeeeeeeeee")
+      // console.log("hereeeeeeeeeeeee")
       setshow(false)
     }
+    // console.log(router.pathname)
   }, [router])
 
+  // useEffect(() => {
+
+  //   console.log(router.query.input)
+  //   console.log(router.pathname)
+  //   console.log(router.asPath)
+  // }, [router.query.input])
+
+
+ 
 
   return (
     <GoogleOAuthProvider clientId="87939184502-dvrtpsvn23tj3comolg0hcm6r8trqqvd.apps.googleusercontent.com">
@@ -47,7 +60,15 @@ function MyApp({ Component, pageProps }) {
             show ?
               <>
                 <Header></Header>
-                <CategoriesBar />
+
+                {
+                  router.pathname == "/search/[input]" ?
+                    <SearchResults></SearchResults>
+                    : ""
+                }
+
+
+                  <CategoriesBar />
               </>
 
               : ""

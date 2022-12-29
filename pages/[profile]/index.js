@@ -67,9 +67,6 @@ const Profile = (props) => {
 
 
 
-  useEffect(() => {
-
-  }, [])
 
 
 

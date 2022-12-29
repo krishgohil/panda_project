@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useAppContext, useFeedContext } from '../context';
 import Post from './Post';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 
 const CategoriesBar = ({ extra, sethomeScroll }) => {
@@ -16,18 +17,18 @@ const CategoriesBar = ({ extra, sethomeScroll }) => {
     const context_feed = useFeedContext()
 
     const { username, name, _id, profileImg, about, guest, links } = context.sharedState
-    const { displayDarkMode, feed_Data } = context_feed.feedstate
+    const { displayDarkMode, feed_Data, category } = context_feed.feedstate
     const router = useRouter()
+
+    const { input } = router.query
 
     useEffect(() => {
         setdarkMode(displayDarkMode)
     }, [displayDarkMode])
 
     useEffect(() => {
-
-
-        console.log(router.pathname)
-    }, [router])
+        console.log(category)
+    }, [category])
 
     const keywords = [
         'Home',
@@ -44,55 +45,92 @@ const CategoriesBar = ({ extra, sethomeScroll }) => {
         'Youtube',
     ]
 
+
     const [activeElement, setActiveElement] = useState('All')
     const goto = (value) => {
-        const link = value.toLowerCase()
-        context_feed.setfeedstate({ ...context_feed.feedstate, category: link })
 
-        if (value === "Home") {
-            router.push(`/`)
+        // console.log(router.pathname)
+        if (router.pathname !== "/search/[input]") {
+
+            const link = value.toLowerCase()
+            let category
+            if (link !== "home") {
+                category = link
+            } else { category = "" }
+            context_feed.setfeedstate({ ...context_feed.feedstate, category: category })
+
+            if (value === "Home") {
+                router.push(`/`)
+
+            } else {
+                router.push(`/${link}`)
+            }
 
         } else {
-            router.push(`/${link}`)
+            const link = value.toLowerCase()
+            let category
+            if (link !== "home") {
+                category = link
+            } else { category = "" }
+            context_feed.setfeedstate({ ...context_feed.feedstate, category: category })
+
+            // router.push({
+            //     pathname: `/search/${input}`,
+            //     query: {
+            //         category: category,
+            //     }
+            // }, undefined, { shallow: true }
+            // )
         }
     }
 
+    var keep = 0
+    window.onscroll = () => {
+        // console.log(keep, "llll", window.scrollY)
+        var stickbar = document.getElementById('stickbar')
+        if (stickbar) {
+            if (window.scrollY < keep) {
+                stickbar.style.top = "56px"
+                // console.log(stickbar, 'stickbar', keep)
+            } else {
+                // console.log("eles", stickbar)
+                stickbar.style.top = "-56px"
+            }
+            keep = window.scrollY
+        }
 
+    }
     return (
         <>
-            <div className='categoriesBar' style={darkMode ? { backgroundColor: "rgb(17, 15, 15)" } : { backgroundColor: 'white' }} id='content' >
+            <div className='stickbar' id='stickbar' style={{ width: '100%', scrollMargin: 0, scrollbarWidth: 0, position: "sticky", }} >
 
-                {
-                    keywords.map((value, i) => (
+                <div className='categoriesBar' style={darkMode ? { backgroundColor: "rgb(17, 15, 15)" } : { backgroundColor: 'white' }} id='content' >
 
-                        <div
-                            // to={`/upp/${value}`.toLowerCase()}
-                            // to={'/upp'value.toLowerCase()} 
+                    {
+                        keywords.map((value, i) => (
+
+                            <div
+                                // to={`/upp/${value}`.toLowerCase()}
+                                // to={'/upp'value.toLowerCase()} 
 
 
-                            onClick={() => goto(value)}
-                            style={router.pathname == `/${value.toLowerCase()}` || (value == "Home" && router.pathname == "/") ? { border: "2px solid orange" } : {}} key={i} className={darkMode ? "too_dm" : "too"} >
-                            {value}
-                        </div>
-                    ))
-                }
+                                onClick={() => goto(value)}
+                                style={
+                                    category == `${value.toLowerCase()}` || (value == "Home" && (router.pathname == "/" || (router.pathname == `/search/[input]` && category == ""))) ? { border: "2px solid orange" } : {}} key={i} className={darkMode ? "too_dm" : "too"} >
+                                {router.pathname == `/search/[input]` && value == "Home" ? "People" : value}
+                                {
+                                    router.pathname == `/search/[input]` ?
+                                        <AiOutlineSearch style={{ marginLeft: '4px' }} ></AiOutlineSearch>
+                                        : ''
+                                }
+                            </div>
+                        ))
+                    }
+                </div >
             </div >
 
 
-            <Modal
-                show={addItem}
-                onHide={() => {
-                    setaddItem(false)
-                }
-                }
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            // style={{ padding: "0.5rem" }}
 
-            >
-                <Post></Post>
-            </Modal>
 
         </>
     )

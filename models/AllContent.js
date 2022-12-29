@@ -79,7 +79,7 @@ const AllContentSchema = new Schema({
 
     // for products
 
-    
+
 
 
     // for youtube
@@ -97,15 +97,8 @@ const AllContentSchema = new Schema({
 
 
 
+AllContentSchema.index({ title: 'text', description: 'text', "ratedBy.raterComment": 'text' }, { weights: { title: 10, description: 5 } })
 
 const AllContent = models.AllContent || model('AllContent', AllContentSchema);
 module.exports = AllContent
 
-
-AllContentSchema.index({ title: 'text', description: 'text ',  "ratedBy.raterComment": 'text' },
-    {
-        weights: {
-            title: 10, description: 5
-        }
-    }
-)

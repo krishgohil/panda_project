@@ -128,7 +128,7 @@ export default function Home(props) {
       <Container onClick={() => {
         console.log(feed_Data)
       }} fluid className={darkMode ? styles.app__main_dm : styles.app__main}>
-        <Row id='cardSsr_Row' className={styles.cardMainRow} style={typeof window !== 'undefined' ? { margin: 0, display: "none" } : { margin: 0, display: 'flex' }}  >
+        <Row id='cardSsr_Row' className={styles.cardMainRow} style={{margin:0,display:"none"}}  >
 
 
           <InfiniteScroll
@@ -224,7 +224,7 @@ export default function Home(props) {
             loader={
 
               !nomore ?
-                <div style={{ textAlign: "center", width: "100%", padding: 0, display: "flex", justifyContent: "center", height: "50px" }} >
+                <div style={{ textAlign: "center", width: "100%", padding: 0, display: "flex", justifyContent: "center", height: "100px" }} >
                   <Spinner animation="border" color='orange' style={{ color: "orange" }} />
                 </div> : ""
             }
@@ -238,7 +238,7 @@ export default function Home(props) {
                     Router.push(`/${peep.username}`)
                   }}
                   className={styles.row}
-                  lg={3} md={4} xs={6} key={i} style={{ margin: "0.5rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
+                  lg={3} md={4} xs={6} key={i} style={{ margin: "0 0 1rem 0", padding: "0.5rem", borderRadius: "1rem", }}   >
                   <Link scroll={false} href={`/${peep.username}`} style={{ textDecoration: "none", color: 'inherit', height: "100%", width: "100%" }} >
                     <div className={darkMode ? styles.linkCard_dm : styles.linkCard} style={{ height: "100%", width: "100%" }}  >
                       <div className={styles.imgupdiv} style={darkMode ? { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(70,70,70)" } : { display: "flex", justifyContent: "center", borderRadius: " 0", backgroundColor: "rgb(214,214,214)" }} >

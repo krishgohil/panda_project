@@ -4,7 +4,7 @@ import { FaBars, FaMoon, FaStar, FaSun, FaUserCircle } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 import styles from '../styles/Home.module.css'
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { host } from '../host';
 import Link from 'next/link';
 import { useAppContext, useFeedContext } from '../context';
@@ -21,7 +21,7 @@ const Header = () => {
     const [addItem, setaddItem] = useState(false)
 
     const { username, name, _id, profileImg, about, guest, links } = context.sharedState
-    const { displayDarkMode, feed_Data } = context_feed.feedstate
+    const { displayDarkMode, feed_Data, category } = context_feed.feedstate
     const router = useRouter()
     const { input } = router.query
 
@@ -62,13 +62,17 @@ const Header = () => {
     const handleSubmit = e => {
 
         e.preventDefault()
-        // let x = input.replace(/\s\s+/g, ' ')
         console.log(_input)
-        Router.push(`/search/${_input}`)
-        // navigate(`/search/${_input}`)
+        router.push(`/search/${_input}`)
 
 
-
+        // router.push({
+        //     pathname: `/search/${_input}`,
+        //     query: {
+        //         category: category,
+        //     }
+        // }, undefined, { shallow: true }
+        // )
 
     }
 
@@ -103,11 +107,10 @@ const Header = () => {
 
 
             <div className={styles.company} >
-                <FaBars
+                {/* <FaBars
                     className={styles.header__menu}
                     size={20}
-                // onClick={() => handleToggleSidebar()}
-                />
+                /> */}
                 <img onClick={() => { router.push("/") }} alt="img" className={styles.companyLogo} src="https://res.cloudinary.com/dmjoqk3ww/image/upload/v1668442060/emm8ons4w1bsfqzz0iwn.png" style={{ zIndex: 999 }} />
                 <span onClick={() => { router.push("/") }} className={styles.companyName} style={darkMode ? { color: 'white', fontFamily: 'cursive', marginLeft: "1rem" } : { color: 'black', fontFamily: 'cursive', marginLeft: "1rem" }}  >
                     <b> <>
@@ -124,7 +127,7 @@ const Header = () => {
                     className={styles.formInput}
                     type='text'
                     // placeholder={placeholder}
-                    placeholder='Search'
+                    placeholder={`Search ${category}`}
                     // value={_input}
                     onChange={e => set_input(e.target.value)}
                     maxLength={100}
